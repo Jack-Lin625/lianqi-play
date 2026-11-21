@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#0e1517" />
+  <title>煉器修仙錄</title>
+  <!-- 加到主畫面（PWA，路線圖 C4）：manifest、圖示、iPhone 的設定 -->
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="煉器修仙錄" />
+  <!-- 字體：標題霞鶩文楷、內文思源宋體，本機字型（fonts/，style.css 的 @font-face；路線圖 C2） -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="app">
+    <!-- 頂部資源列 -->
+    <header id="resource-bar">
+      <div class="res" title="靈石"><span class="res-icon" data-icon="gold"></span><span class="res-label">靈石</span><span id="res-gold">0</span></div>
+      <div class="res" title="爐火符"><span class="res-icon" data-icon="keys"></span><span class="res-label">爐火符</span><span id="res-keys">0</span></div>
+      <div class="res" title="仙玉"><span class="res-icon" data-icon="stones"></span><span class="res-label">仙玉</span><span id="res-stones">0</span></div>
+    </header>
+
+    <div id="pages">
+      <!-- 子分頁列（修士、煉器、坊市、更多 這幾組才有） -->
+      <div id="subnav" class="hidden"></div>
+      <!-- ===== 修煉分頁（主線） ===== -->
+      <section class="tab-page active" data-page="main">
+        <!-- 提醒匯出存檔（第一次飛升後，太久沒匯出時；ui-settings.js） -->
+        <div id="export-reminder" class="export-reminder hidden"></div>
+        <!-- 有新版本（PWA；pwa.js） -->
+        <div id="update-banner" class="export-reminder hidden"></div>
+        <!-- 戰鬥區 -->
+        <div id="battle-area" class="card scroll-card">
+          <div class="battle-header">
+            <button id="btn-stage-select" class="stage-btn"><span id="stage-label">練氣期一層 ▾</span></button>
+            <span id="power-label"><span data-icon="sword"></span>戰力 <b id="power-value">0</b></span>
+          </div>
+          <div class="battle-sub">
+            <span id="monster-progress">妖獸 1/5</span>
+            <span id="farm-badge" class="badge hidden"><span data-icon="cycle"></span>穩固修為中</span>
+            <span id="boss-timer" class="badge boss-timer hidden">30</span>
+            <button id="ascend-badge" class="badge ascend-badge hidden"></button>
+          </div>
+          <div class="battle-field">
+            <div class="fighter" id="hero-box">
+              <div class="float-layer"></div>
+              <!-- 道途技能冷卻圈 -->
+              <div class="skill-ring hidden" id="skill-ring">
+                <svg viewBox="0 0 40 40" aria-hidden="true">
+                  <circle class="ring-bg" cx="20" cy="20" r="17" />
+                  <circle class="ring-fg" id="skill-ring-fg" cx="20" cy="20" r="17" />
+                </svg>
+                <span class="ring-icon" id="skill-ring-icon"></span>
+              </div>
+              <div class="fighter-sprite" id="hero-sprite" data-icon="hero"></div>
+              <!-- 上陣靈獸 -->
+              <div class="pets" id="pets"></div>
+              <div class="fighter-name">修士</div>
+              <div class="hp-bar"><div class="hp-fill" id="hero-hp-fill"></div><span class="hp-text" id="hero-hp-text"></span></div>
+            </div>
+            <div class="vs">鬥</div>
+            <div class="skill-banner" id="skill-banner"></div>
+            <div class="fighter" id="enemy-box">
+              <div class="float-layer"></div>
+              <div class="fighter-sprite" id="enemy-sprite"></div>
+              <div class="fighter-name" id="enemy-name">-</div>
+              <button class="boss-mech hidden" id="boss-mech" title="妖王機制"></button>
+              <div class="hp-bar"><div class="hp-fill enemy" id="enemy-hp-fill"></div><span class="hp-text" id="enemy-hp-text"></span></div>
+            </div>
+          </div>
+          <div id="battle-hint" class="battle-hint hidden"></div>
+          <button id="btn-challenge" class="btn-challenge hidden">衝擊</button>
+          <button id="btn-quit-dungeon" class="btn-challenge hidden"><span data-icon="door"></span>離開秘境</button>
+        </div>
+
+        <!-- 法寶欄 -->
+        <div id="equip-area" class="card">
+          <div id="equip-grid"></div>
+          <details id="stats-panel">
+            <summary>修士屬性</summary>
+            <div id="stats-list"></div>
+          </details>
+        </div>
+
+        <!-- 煉器爐 -->
+        <div id="chest-area" class="card">
+          <div class="chest-stage" id="furnace-stage">
+            <div class="gold-rays" id="gold-rays"></div>
+            <div class="chest-glow" id="chest-glow"></div>
+            <div class="furnace-wrap">
+              <div class="furnace-fire" aria-hidden="true">
+                <svg viewBox="0 0 60 60" preserveAspectRatio="xMidYMax meet">
+                  <path class="flame flame-1" d="M30 58C18 54 16 42 22 32 24 40 27 41 28 36 26 26 31 16 36 10 35 22 44 28 42 42 41 52 36 57 30 58Z" />
+                  <path class="flame flame-2" d="M30 58C22 55 21 46 25 40 27 45 29 45 29 41 29 34 33 28 36 25 35 33 40 38 39 46 38 53 34 57 30 58Z" />
+                  <path class="flame flame-3" d="M30 58C26 56 25 51 27 47 28 50 30 50 30 47 31 43 33 40 34 38 34 44 36 48 35 52 34 56 32 58 30 58Z" />
+                </svg>
+              </div>
+              <span class="chest-icon chest-main" id="chest-icon" data-icon="furnace"></span>
+            </div>
+          </div>
+          <div class="chest-title">煉器爐・<span id="chest-level">一</span>階</div>
+          <button id="btn-open" class="btn-primary">開 爐</button>
+          <div id="pity-bar"></div>
+          <div id="mult-row">
+            <button id="btn-batch" class="btn-mult btn-batch">×1</button>
+            <button id="btn-auto" class="btn-mult btn-auto">自動</button>
+          </div>
+          <div id="open-result" class="hidden"></div>
+        </div>
+      </section>
+
+      <!-- ===== 歷練分頁（秘境） ===== -->
+      <section class="tab-page" data-page="dungeon">
+        <div id="daily-panel"></div>
+        <div id="dungeon-list"></div>
+        <div class="battle-note">每日子時（本地時間 00:00）重置挑戰次數；進入秘境時修煉暫停</div>
+      </section>
+
+      <!-- ===== 道途分頁 ===== -->
+      <section class="tab-page" data-page="dao">
+        <div id="dao-panel"></div>
+      </section>
+
+      <!-- ===== 靈獸分頁 ===== -->
+      <section class="tab-page" data-page="beast">
+        <div id="beast-panel"></div>
+      </section>
+
+      <!-- ===== 飛升分頁 ===== -->
+      <section class="tab-page" data-page="ascend">
+        <div id="ascend-panel"></div>
+      </section>
+
+      <!-- ===== 強化分頁 ===== -->
+      <section class="tab-page" data-page="enhance">
+        <div id="enhance-panel"></div>
+      </section>
+
+      <!-- ===== 煉器分頁 ===== -->
+      <section class="tab-page" data-page="chest">
+        <div class="card chest-card">
+          <div class="chest-big"><span class="chest-icon" id="chest-icon-2" data-icon="furnace"></span></div>
+          <div class="chest-title">煉器爐・<span id="chest-level-2">一</span>階</div>
+          <div id="rate-table"></div>
+          <div id="upgrade-cost"></div>
+          <button id="btn-upgrade" class="btn-primary">升 階</button>
+        </div>
+        <div class="card" id="pity-detail"></div>
+
+        <div class="card">
+          <div class="sub-title"><span data-icon="scroll"></span>自動開爐設定</div>
+          <div class="setting-row">
+            <label for="set-target">目標品階</label>
+            <select id="set-target"></select>
+          </div>
+          <div class="setting-row">
+            <label for="set-affix1">詞條條件 1</label>
+            <select id="set-affix1"></select>
+          </div>
+          <div class="setting-row">
+            <label for="set-affix2">詞條條件 2</label>
+            <select id="set-affix2"></select>
+          </div>
+          <div class="setting-row">
+            <label for="set-better">戰力高於目前裝備時才保留</label>
+            <input type="checkbox" id="set-better" />
+          </div>
+          <div class="setting-row">
+            <label for="set-batch">一次開爐件數</label>
+            <select id="set-batch"></select>
+          </div>
+          <div class="setting-row">
+            <label for="set-speed">開爐速度</label>
+            <select id="set-speed">
+              <option value="1">×1</option>
+              <option value="2">×2</option>
+            </select>
+          </div>
+          <div class="auto-rule" id="auto-rule"></div>
+          <div class="battle-note">設定會自動儲存；在修煉頁按「自動」開始</div>
+        </div>
+      </section>
+
+      <!-- ===== 圖鑑分頁 ===== -->
+      <section class="tab-page" data-page="codex">
+        <div id="codex-panel"></div>
+      </section>
+
+      <!-- ===== 坊市、仙玉商店、儲值 ===== -->
+      <section class="tab-page" data-page="market">
+        <div id="market-panel"></div>
+      </section>
+      <section class="tab-page" data-page="gemshop">
+        <div id="gemshop-panel"></div>
+      </section>
+      <section class="tab-page" data-page="recharge">
+        <div id="recharge-panel"></div>
+      </section>
+
+      <!-- ===== 成就、簽到 ===== -->
+      <section class="tab-page" data-page="achieve">
+        <div id="achieve-panel"></div>
+      </section>
+      <section class="tab-page" data-page="signin">
+        <div id="signin-panel"></div>
+      </section>
+      <section class="tab-page" data-page="mail">
+        <div id="mail-panel"></div>
+      </section>
+
+      <!-- ===== 設定分頁 ===== -->
+      <section class="tab-page" data-page="settings">
+        <div class="card">
+          <div class="sub-title"><span data-icon="bell"></span>聲音</div>
+          <label class="switch-row">
+            <span>背景音樂</span>
+            <input type="checkbox" id="set-music" />
+            <span class="switch"></span>
+          </label>
+          <div class="slider-row">
+            <label for="set-music-vol">音樂音量</label>
+            <input type="range" id="set-music-vol" min="0" max="100" step="5" />
+            <span class="slider-val" id="set-music-vol-val"></span>
+          </div>
+          <label class="switch-row">
+            <span>音效</span>
+            <input type="checkbox" id="set-sound" />
+            <span class="switch"></span>
+          </label>
+          <div class="slider-row">
+            <label for="set-sfx-vol">音效音量</label>
+            <input type="range" id="set-sfx-vol" min="0" max="100" step="5" />
+            <span class="slider-val" id="set-sfx-vol-val"></span>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="sub-title"><span data-icon="scroll"></span>存檔</div>
+          <div class="queue-hint" id="last-export-note"></div>
+          <div class="btn-row">
+            <button id="btn-download-save" class="btn-secondary">下載存檔檔案</button>
+            <button id="btn-import-file" class="btn-secondary">從檔案匯入</button>
+          </div>
+          <input type="file" id="file-import-save" accept=".json,application/json,text/plain" hidden />
+          <button id="btn-export" class="btn-secondary">匯出存檔文字</button>
+          <textarea id="save-text" class="save-text" rows="4" placeholder="按「匯出存檔文字」後，存檔文字會出現在這裡；或把存檔文字貼在這裡再按「匯入存檔」"></textarea>
+          <div class="btn-row">
+            <button id="btn-copy" class="btn-secondary">複製</button>
+            <button id="btn-import" class="btn-secondary">匯入存檔</button>
+          </div>
+          <button id="btn-asc-restore" class="btn-secondary" disabled>還原飛升前的存檔</button>
+          <div class="queue-hint" id="asc-restore-note"></div>
+          <button id="btn-reset" class="btn-danger">重置存檔</button>
+        </div>
+
+        <!-- 版本與加到主畫面（路線圖 C4；pwa.js） -->
+        <div class="card">
+          <div class="sub-title"><span data-icon="furnace"></span>加到主畫面</div>
+          <div id="app-settings"></div>
+        </div>
+
+        <!-- 存檔保護（路線圖 C1；ui-settings.js、backup.js） -->
+        <div class="card" id="save-protect-card">
+          <div class="sub-title"><span data-icon="seal"></span>存檔保護</div>
+          <div class="queue-hint" id="persist-status"></div>
+          <button id="btn-persist" class="btn-secondary">請瀏覽器保留遊戲資料</button>
+          <div class="backup-title">自動備份（新的在上）</div>
+          <div id="auto-backup-list"></div>
+        </div>
+
+        <div class="card">
+          <div class="sub-title"><span data-icon="book"></span>新手引導</div>
+          <button id="btn-tutorial-reset" class="btn-secondary">重新顯示新手引導</button>
+        </div>
+
+        <!-- 開發者選項（測試用按鈕） -->
+        <details id="dev-panel" class="card">
+          <summary class="dev-title"><span data-icon="gourd"></span>開發者選項</summary>
+          <div class="dev-buttons">
+            <button data-dev="keys">+10 爐火符</button>
+            <button data-dev="gold">+10000 靈石</button>
+            <button data-dev="stage">最高境界 +10 層</button>
+            <button data-dev="stones">+5 仙玉</button>
+            <button data-dev="dungeonReset">重置秘境次數</button>
+            <button data-dev="chestUp">煉器爐 +1 階</button>
+            <button data-dev="chestDown">煉器爐 -1 階</button>
+            <button data-dev="offline">模擬閉關 2 小時</button>
+          </div>
+        </details>
+      </section>
+    </div>
+
+    <!-- 底部分頁 -->
+    <nav id="tab-bar">
+      <button class="tab-btn active" data-tab="main"><span data-icon="lotus"></span>修煉</button>
+      <button class="tab-btn" data-tab="dungeon"><span data-icon="mountain"></span>歷練</button>
+      <button class="tab-btn" data-tab="hero"><span data-icon="taiji"></span>修士</button>
+      <button class="tab-btn" data-tab="forge"><span data-icon="furnace"></span>煉器</button>
+      <button class="tab-btn" data-tab="shop"><span data-icon="lantern"></span>坊市</button>
+      <button class="tab-btn" data-tab="more"><span data-icon="book"></span>更多</button>
+    </nav>
+  </div>
+
+  <!-- 彈窗容器 -->
+  <div id="modal-root"></div>
+  <div id="toast-root"></div>
+  <div id="screen-flash"></div>
+  <div id="coach-root"></div>
+  <div id="confirm-root"></div>
+  <!-- 演出用圖層：開爐符文、全螢幕儀式、成就提示 -->
+  <div id="rune-overlay" class="hidden"></div>
+  <div id="ceremony-root"></div>
+  <div id="achieve-pop-root"></div>
+
+  <!-- 載入順序：設定 → 狀態 → 各系統 → 圖示 → 介面 → 主程式 -->
+  <script src="config.js"></script>
+  <script src="scale.js"></script>
+  <script src="state.js"></script>
+  <script src="backup.js"></script>
+  <script src="sound.js"></script>
+  <script src="equipment.js"></script>
+  <script src="chest.js"></script>
+  <script src="battle.js"></script>
+  <script src="stage.js"></script>
+  <script src="ascension.js"></script>
+  <script src="dungeon.js"></script>
+  <script src="dao.js"></script>
+  <script src="beast.js"></script>
+  <script src="daily.js"></script>
+  <script src="gear.js"></script>
+  <script src="rewards.js"></script>
+  <script src="progress.js"></script>
+  <script src="payment.js"></script>
+  <script src="shop.js"></script>
+  <script src="pass.js"></script>
+  <script src="welfare.js"></script>
+  <script src="features.js"></script>
+  <script src="music.js"></script>
+  <script src="icons.js"></script>
+  <script src="ui.js"></script>
+  <script src="ui-pages.js"></script>
+  <script src="ui-chest.js"></script>
+  <script src="ui-nav.js"></script>
+  <script src="ui-unlock.js"></script>
+  <script src="ui-boss.js"></script>
+  <script src="ui-dao.js"></script>
+  <script src="ui-enhance.js"></script>
+  <script src="ui-beast.js"></script>
+  <script src="ui-beast-awaken.js"></script>
+  <script src="ui-settings.js"></script>
+  <script src="pwa.js"></script>
+  <script src="ui-offline.js"></script>
+  <script src="ui-recharge.js"></script>
+  <script src="ui-welfare.js"></script>
+  <script src="ui-daily.js"></script>
+  <script src="ui-pity.js"></script>
+  <script src="ui-dungeon.js"></script>
+  <script src="ui-tutorial.js"></script>
+  <script src="ui-ascend.js"></script>
+  <script src="fx.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>

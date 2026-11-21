@@ -1,0 +1,1665 @@
+{
+  "version": 1,
+  "realms": [
+    {
+      "realm": "練氣期",
+      "sets": [
+        "qingyun",
+        "xuanming"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r1_weapon_a",
+            "name": "青鋒劍",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_weapon_b",
+            "name": "玄冥短劍",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_weapon_c",
+            "name": "松紋木劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r1_helmet_a",
+            "name": "青雲冠",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_helmet_b",
+            "name": "玄冥巾",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_helmet_c",
+            "name": "竹編斗笠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r1_armor_a",
+            "name": "青雲道袍",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_armor_b",
+            "name": "玄冥布衣",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_armor_c",
+            "name": "麻布長衫"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r1_gloves_a",
+            "name": "青雲護腕",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_gloves_b",
+            "name": "玄冥腕帶",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_gloves_c",
+            "name": "粗麻護腕"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r1_boots_a",
+            "name": "青雲履",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_boots_b",
+            "name": "玄冥布鞋",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_boots_c",
+            "name": "芒鞋"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r1_accessory_a",
+            "name": "青雲玉佩",
+            "set": "qingyun"
+          },
+          {
+            "id": "r1_accessory_b",
+            "name": "玄冥骨珠",
+            "set": "xuanming"
+          },
+          {
+            "id": "r1_accessory_c",
+            "name": "桃木符"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "築基期",
+      "sets": [
+        "chixiao",
+        "hantan"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r2_weapon_a",
+            "name": "赤霄劍",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_weapon_b",
+            "name": "寒潭劍",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_weapon_c",
+            "name": "斷水劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r2_helmet_a",
+            "name": "赤霄冠",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_helmet_b",
+            "name": "寒潭玉冠",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_helmet_c",
+            "name": "鐵羽冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r2_armor_a",
+            "name": "赤霄法衣",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_armor_b",
+            "name": "寒潭鱗衣",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_armor_c",
+            "name": "青竹道袍"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r2_gloves_a",
+            "name": "赤霄護腕",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_gloves_b",
+            "name": "寒潭腕甲",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_gloves_c",
+            "name": "銅紋護腕"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r2_boots_a",
+            "name": "赤霄靴",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_boots_b",
+            "name": "寒潭履",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_boots_c",
+            "name": "追風靴"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r2_accessory_a",
+            "name": "赤霄佩",
+            "set": "chixiao"
+          },
+          {
+            "id": "r2_accessory_b",
+            "name": "寒潭冰珠",
+            "set": "hantan"
+          },
+          {
+            "id": "r2_accessory_c",
+            "name": "避水珠"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "結丹期",
+      "sets": [
+        "zidian",
+        "qingshuang"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r3_weapon_a",
+            "name": "紫電驚雷劍",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_weapon_b",
+            "name": "青霜寒月劍",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_weapon_c",
+            "name": "紫電青霜"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r3_helmet_a",
+            "name": "紫電冠",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_helmet_b",
+            "name": "青霜玉冠",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_helmet_c",
+            "name": "金丹蓮冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r3_armor_a",
+            "name": "紫電雷紋袍",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_armor_b",
+            "name": "青霜羽衣",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_armor_c",
+            "name": "丹霞法衣"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r3_gloves_a",
+            "name": "紫電護腕",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_gloves_b",
+            "name": "青霜腕甲",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_gloves_c",
+            "name": "赤金護腕"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r3_boots_a",
+            "name": "紫電雲履",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_boots_b",
+            "name": "青霜踏雪靴",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_boots_c",
+            "name": "丹霞步雲履"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r3_accessory_a",
+            "name": "紫電雷珠",
+            "set": "zidian"
+          },
+          {
+            "id": "r3_accessory_b",
+            "name": "青霜玉環",
+            "set": "qingshuang"
+          },
+          {
+            "id": "r3_accessory_c",
+            "name": "金丹佩"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "元嬰期",
+      "sets": [
+        "taixu",
+        "jiuyou"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r4_weapon_a",
+            "name": "太虛劍",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_weapon_b",
+            "name": "九幽冥劍",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_weapon_c",
+            "name": "嬰火劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r4_helmet_a",
+            "name": "太虛冠",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_helmet_b",
+            "name": "九幽冠",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_helmet_c",
+            "name": "紫金冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r4_armor_a",
+            "name": "太虛道袍",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_armor_b",
+            "name": "九幽冥衣",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_armor_c",
+            "name": "元嬰法袍"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r4_gloves_a",
+            "name": "太虛護腕",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_gloves_b",
+            "name": "九幽腕甲",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_gloves_c",
+            "name": "紫金護腕"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r4_boots_a",
+            "name": "太虛履",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_boots_b",
+            "name": "九幽冥靴",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_boots_c",
+            "name": "踏虛靴"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r4_accessory_a",
+            "name": "太虛玉佩",
+            "set": "taixu"
+          },
+          {
+            "id": "r4_accessory_b",
+            "name": "九幽魂珠",
+            "set": "jiuyou"
+          },
+          {
+            "id": "r4_accessory_c",
+            "name": "元嬰靈珠"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "化神期",
+      "sets": [
+        "xinghe",
+        "biluo"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r5_weapon_a",
+            "name": "星河劍",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_weapon_b",
+            "name": "碧落劍",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_weapon_c",
+            "name": "化神劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r5_helmet_a",
+            "name": "星河冠",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_helmet_b",
+            "name": "碧落冠",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_helmet_c",
+            "name": "七星冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r5_armor_a",
+            "name": "星河法衣",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_armor_b",
+            "name": "碧落羽衣",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_armor_c",
+            "name": "化神道袍"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r5_gloves_a",
+            "name": "星河護腕",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_gloves_b",
+            "name": "碧落腕甲",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_gloves_c",
+            "name": "七星護腕"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r5_boots_a",
+            "name": "星河履",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_boots_b",
+            "name": "碧落雲靴",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_boots_c",
+            "name": "摘星履"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r5_accessory_a",
+            "name": "星河佩",
+            "set": "xinghe"
+          },
+          {
+            "id": "r5_accessory_b",
+            "name": "碧落珠",
+            "set": "biluo"
+          },
+          {
+            "id": "r5_accessory_c",
+            "name": "北斗玉環"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "煉虛期",
+      "sets": [
+        "liuyun",
+        "fentian"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r6_weapon_a",
+            "name": "流雲劍",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_weapon_b",
+            "name": "焚天劍",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_weapon_c",
+            "name": "虛空斬"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r6_helmet_a",
+            "name": "流雲冠",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_helmet_b",
+            "name": "焚天冠",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_helmet_c",
+            "name": "虛空冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r6_armor_a",
+            "name": "流雲法袍",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_armor_b",
+            "name": "焚天戰衣",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_armor_c",
+            "name": "虛空羽衣"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r6_gloves_a",
+            "name": "流雲護腕",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_gloves_b",
+            "name": "焚天臂環",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_gloves_c",
+            "name": "虛空腕甲"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r6_boots_a",
+            "name": "流雲履",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_boots_b",
+            "name": "焚天靴",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_boots_c",
+            "name": "虛空步履"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r6_accessory_a",
+            "name": "流雲佩",
+            "set": "liuyun"
+          },
+          {
+            "id": "r6_accessory_b",
+            "name": "焚天火珠",
+            "set": "fentian"
+          },
+          {
+            "id": "r6_accessory_c",
+            "name": "虛空玉環"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "合體期",
+      "sets": [
+        "zhenyue",
+        "tianji"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r7_weapon_a",
+            "name": "鎮岳劍",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_weapon_b",
+            "name": "天機劍",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_weapon_c",
+            "name": "合道劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r7_helmet_a",
+            "name": "鎮岳冠",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_helmet_b",
+            "name": "天機冠",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_helmet_c",
+            "name": "合道冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r7_armor_a",
+            "name": "鎮岳甲衣",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_armor_b",
+            "name": "天機八卦袍",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_armor_c",
+            "name": "合道法衣"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r7_gloves_a",
+            "name": "鎮岳護腕",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_gloves_b",
+            "name": "天機腕甲",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_gloves_c",
+            "name": "合道臂環"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r7_boots_a",
+            "name": "鎮岳靴",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_boots_b",
+            "name": "天機履",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_boots_c",
+            "name": "合道雲靴"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r7_accessory_a",
+            "name": "鎮岳印",
+            "set": "zhenyue"
+          },
+          {
+            "id": "r7_accessory_b",
+            "name": "天機玉佩",
+            "set": "tianji"
+          },
+          {
+            "id": "r7_accessory_c",
+            "name": "合道靈珠"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "大乘期",
+      "sets": [
+        "hunyuan",
+        "wuji"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r8_weapon_a",
+            "name": "混元劍",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_weapon_b",
+            "name": "無極劍",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_weapon_c",
+            "name": "大乘劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r8_helmet_a",
+            "name": "混元冠",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_helmet_b",
+            "name": "無極冠",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_helmet_c",
+            "name": "大乘寶冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r8_armor_a",
+            "name": "混元道袍",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_armor_b",
+            "name": "無極仙衣",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_armor_c",
+            "name": "大乘法衣"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r8_gloves_a",
+            "name": "混元護腕",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_gloves_b",
+            "name": "無極腕甲",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_gloves_c",
+            "name": "大乘臂環"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r8_boots_a",
+            "name": "混元履",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_boots_b",
+            "name": "無極雲靴",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_boots_c",
+            "name": "大乘步雲履"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r8_accessory_a",
+            "name": "混元珠",
+            "set": "hunyuan"
+          },
+          {
+            "id": "r8_accessory_b",
+            "name": "無極玉佩",
+            "set": "wuji"
+          },
+          {
+            "id": "r8_accessory_c",
+            "name": "大乘舍利"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "渡劫期",
+      "sets": [
+        "leijie",
+        "niepan"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r9_weapon_a",
+            "name": "雷劫劍",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_weapon_b",
+            "name": "涅槃劍",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_weapon_c",
+            "name": "渡厄劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r9_helmet_a",
+            "name": "雷劫冠",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_helmet_b",
+            "name": "涅槃冠",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_helmet_c",
+            "name": "渡厄冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r9_armor_a",
+            "name": "雷劫戰袍",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_armor_b",
+            "name": "涅槃羽衣",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_armor_c",
+            "name": "渡厄法衣"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r9_gloves_a",
+            "name": "雷劫護腕",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_gloves_b",
+            "name": "涅槃腕甲",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_gloves_c",
+            "name": "渡厄臂環"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r9_boots_a",
+            "name": "雷劫靴",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_boots_b",
+            "name": "涅槃履",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_boots_c",
+            "name": "渡厄雲靴"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r9_accessory_a",
+            "name": "雷劫珠",
+            "set": "leijie"
+          },
+          {
+            "id": "r9_accessory_b",
+            "name": "涅槃火羽",
+            "set": "niepan"
+          },
+          {
+            "id": "r9_accessory_c",
+            "name": "渡厄玉佩"
+          }
+        ]
+      }
+    },
+    {
+      "realm": "真仙境",
+      "sets": [
+        "taiyi",
+        "hongmeng"
+      ],
+      "items": {
+        "weapon": [
+          {
+            "id": "r10_weapon_a",
+            "name": "太乙劍",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_weapon_b",
+            "name": "鴻蒙劍",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_weapon_c",
+            "name": "斬仙劍"
+          }
+        ],
+        "helmet": [
+          {
+            "id": "r10_helmet_a",
+            "name": "太乙冠",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_helmet_b",
+            "name": "鴻蒙冠",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_helmet_c",
+            "name": "紫霄仙冠"
+          }
+        ],
+        "armor": [
+          {
+            "id": "r10_armor_a",
+            "name": "太乙仙袍",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_armor_b",
+            "name": "鴻蒙仙衣",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_armor_c",
+            "name": "紫霄道袍"
+          }
+        ],
+        "gloves": [
+          {
+            "id": "r10_gloves_a",
+            "name": "太乙護腕",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_gloves_b",
+            "name": "鴻蒙腕甲",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_gloves_c",
+            "name": "紫霄臂環"
+          }
+        ],
+        "boots": [
+          {
+            "id": "r10_boots_a",
+            "name": "太乙仙履",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_boots_b",
+            "name": "鴻蒙雲靴",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_boots_c",
+            "name": "紫霄步雲履"
+          }
+        ],
+        "accessory": [
+          {
+            "id": "r10_accessory_a",
+            "name": "太乙玉佩",
+            "set": "taiyi"
+          },
+          {
+            "id": "r10_accessory_b",
+            "name": "鴻蒙珠",
+            "set": "hongmeng"
+          },
+          {
+            "id": "r10_accessory_c",
+            "name": "紫霄靈環"
+          }
+        ]
+      }
+    }
+  ],
+  "sets": {
+    "qingyun": {
+      "name": "青雲套",
+      "realm": 1,
+      "desc": "青雲門入門弟子的制式裝束，輕靈飄逸",
+      "bonus": {
+        "2": {
+          "atkPct": 0.05
+        },
+        "4": {
+          "critRate": 0.04,
+          "cdr": 0.05
+        },
+        "6": {
+          "critDmg": 0.3,
+          "goldPct": 0.1
+        }
+      }
+    },
+    "xuanming": {
+      "name": "玄冥套",
+      "realm": 1,
+      "desc": "玄冥宗以寒鐵打造，沉穩厚重",
+      "bonus": {
+        "2": {
+          "hpPct": 0.06
+        },
+        "4": {
+          "defPct": 0.08,
+          "lifesteal": 0.02
+        },
+        "6": {
+          "hpPct": 0.1,
+          "atkPct": 0.06
+        }
+      }
+    },
+    "chixiao": {
+      "name": "赤霄套",
+      "realm": 2,
+      "desc": "赤霄峰以地火淬鍊，鋒芒畢露",
+      "bonus": {
+        "2": {
+          "atkPct": 0.062
+        },
+        "4": {
+          "critRate": 0.05,
+          "cdr": 0.062
+        },
+        "6": {
+          "critDmg": 0.375,
+          "goldPct": 0.125
+        }
+      }
+    },
+    "hantan": {
+      "name": "寒潭套",
+      "realm": 2,
+      "desc": "寒潭底的玄冰所化，可擋烈火",
+      "bonus": {
+        "2": {
+          "hpPct": 0.075
+        },
+        "4": {
+          "defPct": 0.1,
+          "lifesteal": 0.025
+        },
+        "6": {
+          "hpPct": 0.125,
+          "atkPct": 0.075
+        }
+      }
+    },
+    "zidian": {
+      "name": "紫電套",
+      "realm": 3,
+      "desc": "引紫電入器，出手如雷",
+      "bonus": {
+        "2": {
+          "atkPct": 0.075
+        },
+        "4": {
+          "critRate": 0.06,
+          "cdr": 0.075
+        },
+        "6": {
+          "critDmg": 0.45,
+          "goldPct": 0.15
+        }
+      }
+    },
+    "qingshuang": {
+      "name": "青霜套",
+      "realm": 3,
+      "desc": "劍氣凝霜，寒意逼人",
+      "bonus": {
+        "2": {
+          "hpPct": 0.09
+        },
+        "4": {
+          "defPct": 0.12,
+          "lifesteal": 0.03
+        },
+        "6": {
+          "hpPct": 0.15,
+          "atkPct": 0.09
+        }
+      }
+    },
+    "taixu": {
+      "name": "太虛套",
+      "realm": 4,
+      "desc": "太虛觀鎮觀之寶，可納虛空之力",
+      "bonus": {
+        "2": {
+          "atkPct": 0.088
+        },
+        "4": {
+          "critRate": 0.07,
+          "cdr": 0.088
+        },
+        "6": {
+          "critDmg": 0.525,
+          "goldPct": 0.175
+        }
+      }
+    },
+    "jiuyou": {
+      "name": "九幽套",
+      "realm": 4,
+      "desc": "取九幽之下的陰煞煉成",
+      "bonus": {
+        "2": {
+          "hpPct": 0.105
+        },
+        "4": {
+          "defPct": 0.14,
+          "lifesteal": 0.035
+        },
+        "6": {
+          "hpPct": 0.175,
+          "atkPct": 0.105
+        }
+      }
+    },
+    "xinghe": {
+      "name": "星河套",
+      "realm": 5,
+      "desc": "以星辰碎屑織就，流光溢彩",
+      "bonus": {
+        "2": {
+          "atkPct": 0.1
+        },
+        "4": {
+          "critRate": 0.08,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.6,
+          "goldPct": 0.2
+        }
+      }
+    },
+    "biluo": {
+      "name": "碧落套",
+      "realm": 5,
+      "desc": "碧落天宮遺物，仙氣繚繞",
+      "bonus": {
+        "2": {
+          "hpPct": 0.12
+        },
+        "4": {
+          "defPct": 0.16,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.2,
+          "atkPct": 0.12
+        }
+      }
+    },
+    "liuyun": {
+      "name": "流雲套",
+      "realm": 6,
+      "desc": "隨風而動，身法如雲",
+      "bonus": {
+        "2": {
+          "atkPct": 0.113
+        },
+        "4": {
+          "critRate": 0.09,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.675,
+          "goldPct": 0.225
+        }
+      }
+    },
+    "fentian": {
+      "name": "焚天套",
+      "realm": 6,
+      "desc": "烈焰焚天，戰意不滅",
+      "bonus": {
+        "2": {
+          "hpPct": 0.135
+        },
+        "4": {
+          "defPct": 0.18,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.225,
+          "atkPct": 0.135
+        }
+      }
+    },
+    "zhenyue": {
+      "name": "鎮岳套",
+      "realm": 7,
+      "desc": "重如山岳，萬法難侵",
+      "bonus": {
+        "2": {
+          "atkPct": 0.125
+        },
+        "4": {
+          "critRate": 0.1,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.75,
+          "goldPct": 0.25
+        }
+      }
+    },
+    "tianji": {
+      "name": "天機套",
+      "realm": 7,
+      "desc": "暗合天機，洞悉先機",
+      "bonus": {
+        "2": {
+          "hpPct": 0.15
+        },
+        "4": {
+          "defPct": 0.2,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.25,
+          "atkPct": 0.15
+        }
+      }
+    },
+    "hunyuan": {
+      "name": "混元套",
+      "realm": 8,
+      "desc": "混元一氣，生生不息",
+      "bonus": {
+        "2": {
+          "atkPct": 0.138
+        },
+        "4": {
+          "critRate": 0.11,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.825,
+          "goldPct": 0.275
+        }
+      }
+    },
+    "wuji": {
+      "name": "無極套",
+      "realm": 8,
+      "desc": "無極無終，大道至簡",
+      "bonus": {
+        "2": {
+          "hpPct": 0.165
+        },
+        "4": {
+          "defPct": 0.22,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.275,
+          "atkPct": 0.165
+        }
+      }
+    },
+    "leijie": {
+      "name": "雷劫套",
+      "realm": 9,
+      "desc": "歷經九重雷劫而不毀",
+      "bonus": {
+        "2": {
+          "atkPct": 0.15
+        },
+        "4": {
+          "critRate": 0.12,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.9,
+          "goldPct": 0.3
+        }
+      }
+    },
+    "niepan": {
+      "name": "涅槃套",
+      "realm": 9,
+      "desc": "浴火涅槃，死而復生",
+      "bonus": {
+        "2": {
+          "hpPct": 0.18
+        },
+        "4": {
+          "defPct": 0.24,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.3,
+          "atkPct": 0.18
+        }
+      }
+    },
+    "taiyi": {
+      "name": "太乙套",
+      "realm": 10,
+      "desc": "太乙真人親傳，仙光護體",
+      "bonus": {
+        "2": {
+          "atkPct": 0.163
+        },
+        "4": {
+          "critRate": 0.13,
+          "cdr": 0.1
+        },
+        "6": {
+          "critDmg": 0.975,
+          "goldPct": 0.325
+        }
+      }
+    },
+    "hongmeng": {
+      "name": "鴻蒙套",
+      "realm": 10,
+      "desc": "開天闢地之初的鴻蒙紫氣所凝",
+      "bonus": {
+        "2": {
+          "hpPct": 0.195
+        },
+        "4": {
+          "defPct": 0.26,
+          "lifesteal": 0.04
+        },
+        "6": {
+          "hpPct": 0.325,
+          "atkPct": 0.195
+        }
+      }
+    },
+    "taichu": {
+      "name": "太初套",
+      "realm": 10,
+      "divine": true,
+      "desc": "太初之時天地未分，六件神品同源而生",
+      "bonus": {
+        "2": {
+          "atkPct": 0.2,
+          "hpPct": 0.2
+        },
+        "4": {
+          "critRate": 0.13,
+          "defPct": 0.26,
+          "cdr": 0.1
+        },
+        "5": {
+          "atkPct": 0.2
+        },
+        "6": {
+          "critDmg": 1.0,
+          "hpPct": 0.2,
+          "lifesteal": 0.04
+        }
+      }
+    }
+  },
+  "mythics": [
+    {
+      "id": "m_zhuxian",
+      "slot": "weapon",
+      "name": "誅仙劍",
+      "desc": "上古四劍之首，劍出則九天雷霆隨行。",
+      "effect": {
+        "type": "thunder",
+        "name": "九天神雷",
+        "chance": 0.1,
+        "mult": 4
+      }
+    },
+    {
+      "id": "m_xuanyuan",
+      "slot": "weapon",
+      "name": "軒轅劍",
+      "desc": "人皇之劍，斬盡天下不臣之妖。",
+      "effect": {
+        "type": "execute",
+        "name": "人皇斬",
+        "threshold": 0.3,
+        "bonus": 0.8
+      }
+    },
+    {
+      "id": "m_zijin",
+      "slot": "helmet",
+      "name": "紫金冠",
+      "desc": "太上老君爐中所煉，頂上紫氣三千丈。",
+      "effect": {
+        "type": "guard",
+        "name": "紫氣東來",
+        "chance": 0.2,
+        "reduction": 0.5
+      }
+    },
+    {
+      "id": "m_jiulong",
+      "slot": "helmet",
+      "name": "九龍神火冠",
+      "desc": "冠中封有九條火龍，危急時吐焰護主。",
+      "effect": {
+        "type": "heal",
+        "name": "九龍神火",
+        "chance": 0.1,
+        "pct": 0.06
+      }
+    },
+    {
+      "id": "m_bagua",
+      "slot": "armor",
+      "name": "八卦紫綬仙衣",
+      "desc": "穿之刀兵不侵、水火難傷。",
+      "effect": {
+        "type": "guard",
+        "name": "八卦護身",
+        "chance": 0.25,
+        "reduction": 0.4
+      }
+    },
+    {
+      "id": "m_jinlv",
+      "slot": "armor",
+      "name": "金縷玉衣",
+      "desc": "以千年暖玉縫製，氣血生生不息。",
+      "effect": {
+        "type": "heal",
+        "name": "生生不息",
+        "chance": 0.12,
+        "pct": 0.05
+      }
+    },
+    {
+      "id": "m_jingang",
+      "slot": "gloves",
+      "name": "金剛琢",
+      "desc": "投之如山崩，可收天下兵刃。",
+      "effect": {
+        "type": "echo",
+        "name": "金剛連擊",
+        "chance": 0.12
+      }
+    },
+    {
+      "id": "m_luobao",
+      "slot": "gloves",
+      "name": "落寶金錢",
+      "desc": "專落敵人法寶，出手必有斬獲。",
+      "effect": {
+        "type": "execute",
+        "name": "落寶",
+        "threshold": 0.4,
+        "bonus": 0.5
+      }
+    },
+    {
+      "id": "m_fenghuo",
+      "slot": "boots",
+      "name": "風火輪",
+      "desc": "腳踏風火，往來如電，所過之處烈焰燎原。",
+      "effect": {
+        "type": "thunder",
+        "name": "風火燎原",
+        "chance": 0.08,
+        "mult": 3
+      }
+    },
+    {
+      "id": "m_tayun",
+      "slot": "boots",
+      "name": "踏雲履",
+      "desc": "仙人所遺，一步千里，出手快如殘影。",
+      "effect": {
+        "type": "echo",
+        "name": "踏雲連斬",
+        "chance": 0.12
+      }
+    },
+    {
+      "id": "m_qiankun",
+      "slot": "accessory",
+      "name": "乾坤圈",
+      "desc": "鎮守陳塘關的至寶，擲出可撼天地。",
+      "effect": {
+        "type": "thunder",
+        "name": "乾坤一擊",
+        "chance": 0.09,
+        "mult": 3.5
+      }
+    },
+    {
+      "id": "m_dinghai",
+      "slot": "accessory",
+      "name": "定海神珠",
+      "desc": "二十四顆神珠，可定四海風浪。",
+      "effect": {
+        "type": "guard",
+        "name": "定海",
+        "chance": 0.15,
+        "reduction": 0.6
+      }
+    }
+  ],
+  "divines": [
+    {
+      "id": "d_kaitian",
+      "slot": "weapon",
+      "name": "開天斧",
+      "desc": "開天闢地的第一斧，斧落則混沌分、天雷鳴。",
+      "set": "taichu",
+      "effect": {
+        "type": "thunder",
+        "name": "開天神雷",
+        "chance": 0.12,
+        "mult": 5
+      }
+    },
+    {
+      "id": "d_haotian",
+      "slot": "helmet",
+      "name": "昊天冠",
+      "desc": "昊天上帝的冠冕，萬道清氣自頂而降。",
+      "set": "taichu",
+      "effect": {
+        "type": "heal",
+        "name": "昊天清氣",
+        "chance": 0.14,
+        "pct": 0.07
+      }
+    },
+    {
+      "id": "d_taiji",
+      "slot": "armor",
+      "name": "太極道袍",
+      "desc": "陰陽二氣織就，萬法加身而不沾。",
+      "set": "taichu",
+      "effect": {
+        "type": "guard",
+        "name": "太極化勁",
+        "chance": 0.3,
+        "reduction": 0.5
+      }
+    },
+    {
+      "id": "d_fantian",
+      "slot": "gloves",
+      "name": "番天印",
+      "desc": "一印落下，山岳崩摧，專破垂死之敵。",
+      "set": "taichu",
+      "effect": {
+        "type": "execute",
+        "name": "番天一印",
+        "threshold": 0.35,
+        "bonus": 1.0
+      }
+    },
+    {
+      "id": "d_jinguang",
+      "slot": "boots",
+      "name": "縱地金光履",
+      "desc": "一步千里，金光過處劍影重重。",
+      "set": "taichu",
+      "effect": {
+        "type": "echo",
+        "name": "金光連斬",
+        "chance": 0.15
+      }
+    },
+    {
+      "id": "d_hundun",
+      "slot": "accessory",
+      "name": "混沌鐘",
+      "desc": "鐘聲一響，混沌震盪，萬界皆聞。",
+      "set": "taichu",
+      "effect": {
+        "type": "thunder",
+        "name": "混沌鐘鳴",
+        "chance": 0.11,
+        "mult": 4.5
+      }
+    }
+  ]
+}

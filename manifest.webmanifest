@@ -1,0 +1,17 @@
+{
+  "name": "煉器修仙錄",
+  "short_name": "煉器修仙錄",
+  "description": "修仙主題的放置型 RPG：自動與妖獸鬥法、開煉器爐取得法寶、飛升渡劫。",
+  "lang": "zh-Hant",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0b1113",
+  "theme_color": "#0e1517",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
