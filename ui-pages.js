@@ -130,11 +130,25 @@ function renderCodex(force = false) {
   const total = getCodexTotal();
   const count = getCodexCount();
   const seen = state.codex.seen;
+  // 圖鑑兌換（v1.1 V1）：可兌換的格子可以點；兌換來的格子當凡品顯示、加「兌」字
+  const ex = CONFIG.gear.codexExchange;
+  const exList = isCodexExchangeOpen() ? getCodexExchangeList() : [];
+  const exIds = new Set(exList.map((e) => e.id));
   const cell = (t) => {
     const r = seen[t.id];
-    if (r === undefined) return `<div class="cx-cell unseen">？？？</div>`;
+    if (r === undefined) {
+      if (exIds.has(t.id)) return `<button class="cx-cell unseen cx-ex" data-act="exchange" data-arg="${t.id}">可兌換</button>`;
+      return `<div class="cx-cell unseen">？？？</div>`;
+    }
+    if (r === ex.seenValue) return `<div class="cx-cell cx-exd" style="color:${CONFIG.rarities[0].color}" title="仙玉兌換（只記錄圖鑑）">${t.name}<em class="cx-ex-mark">兌</em></div>`;
     return `<div class="cx-cell" style="color:${CONFIG.rarities[r].color}" title="最高：${CONFIG.rarities[r].name}">${t.name}</div>`;
   };
+  const exCard = !isFeatureOpen('codex')
+    ? ''
+    : !isCodexExchangeOpen()
+      ? `<div class="card cx-ex-card"><div class="sub-title">${icon('stones')}圖鑑兌換</div><div class="queue-hint">第 ${ex.minAscensions} 次飛升後，可以用仙玉兌換已經開不到的境界外觀（只記錄圖鑑，不會得到法寶）。</div></div>`
+      : `<div class="card cx-ex-card"><div class="sub-title">${icon('stones')}圖鑑兌換<small class="daily-reset">每種 ${ri('stones')}${fmtNum(ex.price)}</small></div>
+        <div class="queue-hint">${exList.length ? `可兌換 <b>${exList.length}</b> 種（已經開不到的境界外觀），全部需要 ${ri('stones')}${fmtNum(ex.price * exList.length)}；目前仙玉 ${fmtNum(state.upgradeStones)}。點下方「可兌換」的格子兌換。` : '目前沒有可以兌換的外觀。'}只記錄圖鑑、不會得到法寶；之後開爐開到同一件時，會改記實際品階。</div></div>`;
   const milestones = CONFIG.gear.codexMilestones
     .map((m, i) => {
       const done = state.codex.claimed.includes(i);
@@ -187,6 +201,7 @@ function renderCodex(force = false) {
       <div class="daily-bar cx-bar"><div class="daily-fill" style="width:${(count / total) * 100}%"></div><span>${count}/${total}</span></div>
       <div class="cx-milestones">${milestones}</div>
     </div>
+    ${exCard}
     <div class="card"><div class="sub-title">${icon('star')}圖鑑套組加成<small class="daily-reset">目前：${codexBonusText}</small></div>
       <div class="queue-hint">收集齊一組就永久生效（與其他加成相乘，計入戰力）。${codexAscHint}</div>
       <ul class="cx-sets">${codexSets}</ul></div>
@@ -194,6 +209,7 @@ function renderCodex(force = false) {
     ${divineList.length ? `<div class="card"><div class="sub-title">${icon('seal')}神品專屬<small class="daily-reset">六件湊成${GEAR_DATA.sets.taichu ? GEAR_DATA.sets.taichu.name : '套裝'}</small></div>${divineLock}<div class="cx-myths">${divines}</div></div>` : ''}
     <div class="card"><div class="sub-title">${icon('scroll')}各境界法寶</div>${realms}</div>`);
   bindPanel(panel, {
+    exchange: (id) => openCodexExchangeConfirm(id),
     codex: (i) => {
       const r = claimCodexMilestone(Number(i));
       if (!r) return;
@@ -201,6 +217,45 @@ function renderCodex(force = false) {
       toast(`圖鑑獎勵：${rewardSpecHTML(r)}`);
       afterShopChange();
     },
+  });
+}
+
+/** 圖鑑兌換的確認視窗（v1.1 V1） */
+function openCodexExchangeConfirm(id) {
+  const reason = getCodexExchangeBlockReason(id);
+  if (reason) return toast(reason);
+  const e = getCodexExchangeList().find((x) => x.id === id);
+  if (!e) return;
+  const price = CONFIG.gear.codexExchange.price;
+  const after = e.left - 1;
+  const modal = openModal(`
+    <div class="modal-title">${icon('book')}圖鑑兌換</div>
+    <div class="awaken-rows">
+      <div><span>外觀</span><b>${e.realmName}・${CONFIG.slots[e.slot].name}・${e.name}</b></div>
+      <div><span>消耗</span><b>${ri('stones')}仙玉 ${fmtNum(price)}（目前 ${fmtNum(state.upgradeStones)}）</b></div>
+      <div><span>${e.realmName}全收集</span><b>${after ? `兌換後還差 ${after} 種` : '兌換後收集齊！'}</b></div>
+    </div>
+    <div class="awaken-cost">只記錄圖鑑，不會得到法寶。</div>
+    <div class="modal-buttons">
+      <button class="btn-secondary" data-act="cancel">再想想</button>
+      <button class="btn-equip" data-act="ok">兌 換</button>
+    </div>
+  `);
+  modal.querySelector('[data-act="cancel"]').addEventListener('click', closeModal);
+  modal.querySelector('[data-act="ok"]').addEventListener('click', () => {
+    const res = exchangeCodex(id);
+    closeModal();
+    if (!res.ok) return toast(res.error);
+    playSound('reward');
+    const done = (res.completed || []).map((n) => {
+      const g = getCodexSetStatus().find((x) => x.name === n);
+      const b = g ? Object.entries(g.bonus).map(([k, v]) => `${{ atkPct: '攻擊', hpPct: '氣血' }[k] || k} +${Math.round(v * 100)}%`).join('、') : '';
+      return `${n}完成：${b}`;
+    });
+    toast(done.length ? `${icon('star')} ${done.join('；')}` : `已兌換「${e.name}」`, done.length ? CONFIG.fx.toast.long : CONFIG.fx.toast.normal);
+    saveGame();
+    renderAll();
+    renderCodex(true);
   });
 }
 

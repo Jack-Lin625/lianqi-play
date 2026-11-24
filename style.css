@@ -3512,6 +3512,31 @@ body.slowmo .float-num {
   font-weight: 400;
 }
 
+/* 圖鑑兌換（v1.1 V1）：可兌換的格子、兌換來的格子 */
+.cx-cell.cx-ex {
+  min-height: 40px;
+  width: 100%;
+  color: var(--jade, #2f7d6b);
+  border-color: currentColor;
+  opacity: 1;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cx-cell.cx-exd {
+  position: relative;
+  border-style: dashed;
+}
+
+.cx-ex-mark {
+  position: absolute;
+  top: 1px;
+  right: 2px;
+  font-size: 11px;
+  font-style: normal;
+  color: var(--ink-soft);
+}
+
 .cx-myths {
   display: grid;
   grid-template-columns: 1fr 1fr;

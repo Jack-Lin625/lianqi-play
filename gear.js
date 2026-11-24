@@ -370,6 +370,68 @@ function getCodexCount() {
   return Object.keys(state.codex.seen).filter((id) => GEAR_INDEX[id]).length;
 }
 
+// ---------- 圖鑑兌換（v1.1 V1，CONFIG.gear.codexExchange；PLAN.md 2.28） ----------
+
+/** 這一格是兌換來的（還沒開爐開到過） */
+function isCodexExchanged(id) {
+  return state.codex.seen[id] === CONFIG.gear.codexExchange.seenValue;
+}
+
+/** 圖鑑兌換開放了沒（圖鑑功能開放、飛升次數夠） */
+function isCodexExchangeOpen() {
+  return isFeatureOpen('codex') && ((state.ascension && state.ascension.count) || 0) >= CONFIG.gear.codexExchange.minAscensions;
+}
+
+/**
+ * 可以兌換的外觀：還沒收集、而且已經開不到的境界外觀（外觀境界 < 目前開爐的外觀境界）
+ * 依「這一個境界還差幾種就收齊」由少到多排序（同樣差幾種時，境界低的先）
+ * @returns {{id: string, name: string, slot: Slot, realm: number, realmName: string, left: number}[]}
+ */
+function getCodexExchangeList() {
+  if (!GEAR_DATA) return [];
+  const seen = state.codex.seen;
+  const cur = getGearRealm(getEquipLevel());
+  const out = [];
+  GEAR_DATA.realms.forEach((r, i) => {
+    const realm = i + 1;
+    if (realm >= cur) return;
+    const missing = [];
+    for (const slot of CONFIG.slotOrder) for (const t of r.items[slot]) if (seen[t.id] === undefined) missing.push({ id: t.id, name: t.name, slot, realm, realmName: r.realm });
+    for (const m of missing) out.push({ ...m, left: missing.length });
+  });
+  return out.sort((a, b) => a.left - b.left || a.realm - b.realm);
+}
+
+/** 不能兌換的原因（可以時回傳 ''） */
+function getCodexExchangeBlockReason(id) {
+  const c = CONFIG.gear.codexExchange;
+  if (!isFeatureOpen('codex')) return getFeatureLockText('codex');
+  if (!isCodexExchangeOpen()) return `第 ${c.minAscensions} 次飛升後才能兌換`;
+  if (state.codex.seen[id] !== undefined) return '已經收集過了';
+  if (!getCodexExchangeList().some((e) => e.id === id)) return '這件外觀現在開爐就拿得到，不能兌換';
+  if (state.upgradeStones < c.price) return '仙玉不足';
+  return '';
+}
+
+/**
+ * 用仙玉兌換一件錯過的外觀：只記錄圖鑑、不給法寶
+ * @returns {{ok: boolean, error?: string, completed?: string[]}} completed：這次兌換補齊的圖鑑套組名稱
+ */
+function exchangeCodex(id) {
+  const reason = getCodexExchangeBlockReason(id);
+  if (reason) return { ok: false, error: reason };
+  const before = new Set(getCodexSetStatus().filter((g) => g.done).map((g) => g.id));
+  state.upgradeStones -= CONFIG.gear.codexExchange.price;
+  state.codex.seen[id] = CONFIG.gear.codexExchange.seenValue;
+  codexRev++;
+  trackStat('codexExchanged');
+  const completed = getCodexSetStatus()
+    .filter((g) => g.done && !before.has(g.id))
+    .map((g) => g.name);
+  onEquipmentChanged(); // 套組加成可能生效，重算屬性
+  return { ok: true, completed };
+}
+
 // ---------- 圖鑑套組加成（B2，CONFIG.gear.codexSets） ----------
 
 /** 圖鑑套組的清單：每個境界的 18 種外觀、仙品專屬、神品專屬 */

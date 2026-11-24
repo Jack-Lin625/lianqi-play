@@ -95,6 +95,7 @@ const SCALE_FIELDS = [
   ['gear.enhance.goldBase', 'gold'],
   ['gear.enhance.ironCost.*', 'iron'],
   ['gear.reroll.ironCost.*', 'iron'],
+  ['gear.codexExchange.price', 'stones'], // v1.1 V1：圖鑑兌換
   // 商店與儲值
   ['shop.market.refreshCost.*', 'stones'],
   ['shop.market.pool.*.price', 'gold'],

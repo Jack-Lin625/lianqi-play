@@ -19,7 +19,7 @@ const CONFIG = {
   },
 
   // ---------- 版本（路線圖 C4）：sw.js 的 VERSION 要一樣；發布新版時兩個一起改，玩家才會看到「有新版本」 ----------
-  app: { version: '1.0.0' },
+  app: { version: '1.0.1' },
 
   // ---------- 存檔保護（路線圖 C1，PLAN.md 2.26；backup.js） ----------
   //   自動備份：最多 slots 份（最舊的先刪），每 intervalMinutes 分鐘在線一份、每天第一次上線一份；存在 localStorage 的 autoKey
@@ -930,6 +930,11 @@ const CONFIG = {
     // 圖鑑套組加成（B2，使用者已確認 2026-11-18）：收集齊一組就永久生效（圖鑑開放後；atkPct／hpPct 與其他加成相乘）
     //   realm：某一個境界的 18 種外觀全收集（共 10 組）；mythic：仙品專屬 12 種；divine：神品專屬 6 種
     //   realmMinAscensions：境界套組要第幾次飛升後才生效（PR #2 審閱後使用者決定 2026-11-18：第一次飛升後；仙品、神品套組不限）
+    // 圖鑑兌換（v1.1 V1，2026-11-22 使用者確認，PLAN.md 2.28）：用仙玉兌換「已經開不到」的境界外觀（外觀境界 < 目前開爐的外觀境界）
+    //   只記錄圖鑑、不給法寶、不升存檔；codex.seen 記 seenValue（−1 = 兌換來的，畫面當凡品顯示並加「兌」字）
+    //   之後開爐開到同一件外觀時，照常記成實際品階（recordCodex 的「品階較高就更新」），「兌」字自然消失
+    //   price：每種仙玉（基準單位）；minAscensions：第幾次飛升後開放（和境界套組加成生效的時間相同）
+    codexExchange: { minAscensions: 1, price: 200, seenValue: -1 },
     codexSets: {
       realmMinAscensions: 1,
       realm: { atkPct: 0.01, hpPct: 0.01 },
@@ -1012,13 +1017,18 @@ const CONFIG = {
     { id: 'tower50', name: '塔頂望月', desc: '鎮妖塔通過第 50 層', type: 'tower', target: 50, reward: { stones: 30, iron: 10 } },
     { id: 'tower100', name: '百層鎮妖', desc: '鎮妖塔通過第 100 層', type: 'tower', target: 100, reward: { stones: 50 } },
     { id: 'tower150', name: '塔通天外', desc: '鎮妖塔通過第 150 層', type: 'tower', target: 150, reward: { stones: 100, iron: 20 } },
+    // v1.1 V1 長期目標（2026-11-22 使用者確認，PLAN.md 2.28 第 9 段）：獎勵只有仙玉與外觀（不加戰力）
+    { id: 'tower160', name: '鎮妖登峰', desc: '鎮妖塔通過第 160 層', type: 'tower', target: 160, reward: { stones: 300, cosmetic: 'zhenyao' } },
     // 飛升與挑戰型成就（B2；finalTier = 打倒最終 Boss 的最高天劫層數、codexDivine = 神品圖鑑收集數）
     { id: 'asc1', name: '白日飛升', desc: '第一次飛升', type: 'stat:ascensions', target: 1, reward: { stones: 20 } },
     { id: 'asc5', name: '五度登仙', desc: '累計飛升 5 次', type: 'stat:ascensions', target: 5, reward: { stones: 50, eggs: 3 } },
     { id: 'asc10', name: '十轉仙途', desc: '累計飛升 10 次', type: 'stat:ascensions', target: 10, reward: { stones: 100, iron: 20 } },
+    { id: 'asc25', name: '廿五登仙', desc: '累計飛升 25 次', type: 'stat:ascensions', target: 25, reward: { stones: 250 } }, // v1.1 V1
     { id: 'asc30', name: '萬劫不磨', desc: '累計飛升 30 次', type: 'stat:ascensions', target: 30, reward: { stones: 300, eggs: 10 } },
     { id: 'tier5', name: '五重天劫', desc: '在天劫 5 重以上打倒最終 Boss', type: 'finalTier', target: 5, reward: { stones: 80 }, challenge: true },
     { id: 'tier10', name: '十重天劫', desc: '在天劫 10 重以上打倒最終 Boss', type: 'finalTier', target: 10, reward: { stones: 200, iron: 30 }, challenge: true },
+    { id: 'tier15', name: '十五重天劫', desc: '在天劫 15 重以上打倒最終 Boss', type: 'finalTier', target: 15, reward: { stones: 300 }, challenge: true }, // v1.1 V1
+    { id: 'tier20', name: '二十重天劫', desc: '在天劫 20 重以上打倒最終 Boss', type: 'finalTier', target: 20, reward: { stones: 500 }, challenge: true }, // v1.1 V1
     { id: 'noLower', name: '一往無前', desc: '天劫 1 重以上、本輪沒有降過層數就打倒最終 Boss', type: 'stat:noLowerFinal', target: 1, reward: { stones: 50 }, challenge: true },
     // 挑戰型成就（D3，2026-11-20 使用者確認，PLAN.md 2.27 第 4 段）：challenge = 成就頁的「挑戰」標籤
     //   final：打倒主線最終 Boss 的那一場符合條件時，stats[type 的 stat 名稱] +1（progress.js 的 recordFinalBossWin）
@@ -1038,6 +1048,8 @@ const CONFIG = {
     { id: 'divine1', name: '神器出世', desc: '煉出第一件神品法寶', type: 'stat:divines', target: 1, reward: { stones: 50 } },
     { id: 'chest25', name: '神爐再鑄', desc: '煉器爐提升到二十五階', type: 'chest', target: 25, reward: { stones: 80 } },
     { id: 'chest30', name: '鴻鈞神爐', desc: '煉器爐提升到三十階', type: 'chest', target: 30, reward: { stones: 150 } },
+    // v1.1 V1：圖鑑全收集（兌換來的外觀也算）
+    { id: 'codexAll', name: '萬寶歸宗', desc: '圖鑑收集全部 198 種法寶（含兌換）', type: 'codex', target: 198, reward: { stones: 100, cosmetic: 'wanbao' } },
     { id: 'codexDivine', name: '神品圖譜', desc: '圖鑑收集全部 6 件神品專屬', type: 'codexDivine', target: 6, reward: { stones: 100 } },
     { id: 'hatch10', name: '靈獸之友', desc: '累計孵化 10 顆靈獸蛋', type: 'stat:hatched', target: 10, reward: { eggs: 1 } },
     // 靈獸覺醒（B3）：beastsAwakened = 已覺醒的靈獸種類數
@@ -1134,6 +1146,11 @@ const CONFIG = {
       hundun: { name: '混沌道袍', color: '#3b2f5c', aura: '#b59cff', price: null, source: '真仙境首殺（第 10 章）' },
       yuehua: { name: '月華仙衣', color: '#33506e', aura: '#dce9ff', price: null, source: '月曆簽到第 28 格' },
       jielei: { name: '劫雷仙衣', color: '#1f4f6b', aura: '#7fe3ff', price: null, source: '天劫 6 重打倒最終 Boss（飛升）' },
+      // v1.1 V1（PLAN.md 2.28）
+      zixiao: { name: '紫霄劫衣', color: '#4a2a7a', aura: '#d7b8ff', price: null, source: '天劫 18 重打倒最終 Boss（飛升）' },
+      taixu: { name: '太虛道袍', color: '#1d2e45', aura: '#9ff0ff', price: null, source: '天劫 24 重打倒最終 Boss（飛升）' },
+      wanbao: { name: '萬寶霞衣', color: '#7a4a1a', aura: '#ffd98a', price: null, source: '成就「萬寶歸宗」（圖鑑全收集）' },
+      zhenyao: { name: '鎮妖玄袍', color: '#2b3a2a', aura: '#a8f0a0', price: null, source: '成就「鎮妖登峰」（鎮妖塔第 160 層）' },
     },
     // 儲值（模擬版；價格單位為新台幣）
     recharge: {
@@ -1319,6 +1336,10 @@ const CONFIG = {
       { tier: 9, reward: { stones: 300 } },
       { tier: 12, reward: { stones: 400, divinePick: 1 } },
       { tier: 15, reward: { stones: 500 } },
+      // v1.1 V1（2026-11-22 使用者確認，PLAN.md 2.28）：每 3 重 +100 仙玉；V3 完成後回頭檢查會不會太早達成
+      { tier: 18, reward: { stones: 600, cosmetic: 'zixiao' } },
+      { tier: 21, reward: { stones: 700 } },
+      { tier: 24, reward: { stones: 800, cosmetic: 'taixu' } },
     ],
     // 第 at 次飛升（開放爐階 21～25）時送的神品（部位隨機；PR #2 審閱後使用者決定 2026-11-18）。v13 以前已飛升 at 次以上的存檔，遷移時寄到信箱補發
     divineGift: { at: 2, reward: { items: [{ rarity: 6 }] } },
