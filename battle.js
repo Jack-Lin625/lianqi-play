@@ -226,9 +226,9 @@ function performAttack(battle, attacker, defender, side, isEcho = false) {
   if (!hit.dodged && getPetBuff(defender, 'dmgTaken')) {
     hit.damage = Math.max(1, Math.round(hit.damage * (1 - getPetBuff(defender, 'dmgTaken'))));
   }
-  // 減傷（例如體修「金剛不壞」）
+  // 減傷（例如體修「金剛不壞」）；天劫的妖獸穿透一部分（shieldPierce，v1.2）
   if (!hit.dodged && defender.shieldLeft > 0) {
-    hit.damage = Math.max(1, Math.round(hit.damage * (1 - defender.shieldReduction)));
+    hit.damage = Math.max(1, Math.round(hit.damage * (1 - defender.shieldReduction * (1 - (attacker.shieldPierce || 0)))));
     hit.shielded = true;
   }
   // 仙品護身：機率大幅減傷

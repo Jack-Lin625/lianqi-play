@@ -112,7 +112,7 @@ function createMonster(total, isBoss) {
   const trib = getTribulationMult();
   stats.hp *= trib.hp;
   stats.atk *= trib.atk;
-  return createFighter(stats, {
+  const fighter = createFighter(stats, {
     name: isBoss ? info.bossName : info.name,
     emoji: isBoss ? info.bossEmoji : info.emoji,
     color: info.color,
@@ -120,6 +120,8 @@ function createMonster(total, isBoss) {
     mechanic,
     dmgTakenMult: isBoss ? getAscBossDamageMult() : 1, // 誅魔（飛升天賦）：主角對主線 Boss 的傷害倍率（battle.js 的 getDmgTakenMult）
   });
+  fighter.shieldPierce = getTribulationShieldPierce(); // v1.2：天劫穿透護體（battle.js 的護盾減傷）
+  return fighter;
 }
 
 /** 每擊敗一隻小怪的金幣（含靈獸的靈石掉落加成） */

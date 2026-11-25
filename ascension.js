@@ -152,10 +152,16 @@ function getTribulationMult(tier = state.ascension.tier) {
   return { hp: Math.pow(c.hpMult, tier), atk: Math.pow(c.atkMult, tier) };
 }
 
-/** 天劫倍率的說明文字，例如「氣血 ×2.20、攻擊 ×1.86」 */
+/** 天劫穿透護體：天劫 1 重以上時，主線妖獸無視主角護盾減傷的比例（v1.2 Z1） */
+function getTribulationShieldPierce(tier = state.ascension.tier) {
+  return tier > 0 ? CONFIG.ascension.tribulation.shieldPierce || 0 : 0;
+}
+
+/** 天劫倍率的說明文字，例如「氣血 ×2.20、攻擊 ×1.86、穿透護體 75%」 */
 function tribulationMultText(tier) {
   const m = getTribulationMult(tier);
-  return `氣血 ×${m.hp.toFixed(2)}、攻擊 ×${m.atk.toFixed(2)}`;
+  const p = getTribulationShieldPierce(tier);
+  return `氣血 ×${m.hp.toFixed(2)}、攻擊 ×${m.atk.toFixed(2)}${p ? `、穿透護體 ${Math.round(p * 100)}%` : ''}`;
 }
 
 // ---------- 天劫層數 ----------

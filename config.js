@@ -19,7 +19,7 @@ const CONFIG = {
   },
 
   // ---------- 版本（路線圖 C4）：sw.js 的 VERSION 要一樣；發布新版時兩個一起改，玩家才會看到「有新版本」 ----------
-  app: { version: '1.1.0' },
+  app: { version: '1.2.0' },
 
   // ---------- 存檔保護（路線圖 C1，PLAN.md 2.26；backup.js） ----------
   //   自動備份：最多 slots 份（最舊的先刪），每 intervalMinutes 分鐘在線一份、每天第一次上線一份；存在 localStorage 的 autoKey
@@ -642,7 +642,7 @@ const CONFIG = {
   //     firstCooldownMult  每場戰鬥第一次施放只要冷卻 × 這個倍率（0.5 = 首次冷卻減半）
   //     executeBelow / executeMult  敵人氣血低於 executeBelow 時，技能傷害 × executeMult
   //     critHealPct     一般攻擊會心時回復最大氣血的比例（不是吸血，屍毒下也有效）
-  //     noHpPenalty     取消道途的氣血減少
+  //     hpPctAdd        道途的氣血加成再加減（v1.2 雷體 +10%；道途加成是「額外加成」的一組，和其他加成相乘）
   //     recastChance    技能施放後再施放一次的機率（再施放的那一次不會再觸發）
   //     pierceShield    技能無視目標的護盾減傷（鬼甲）；pierceDef：技能計算時目標護體 × (1 - pierceDef)
   //     reflectPct      護體期間，把受到的一般攻擊傷害（減傷後）的這個比例反彈給攻擊者
@@ -689,12 +689,12 @@ const CONFIG = {
         tiers: [
           {
             name: '法修',
-            bonus: { atkPct: 0.3, hpPct: -0.1 },
+            bonus: { atkPct: 0.3 }, // v1.2（PLAN.md 2.31）：取消氣血 −10%
             skill: { name: '五雷正法', type: 'damage', cooldown: 8, mult: 5 },
           },
           {
             name: '雷尊',
-            bonus: { atkPct: 0.5, hpPct: -0.05 },
+            bonus: { atkPct: 0.5 }, // v1.2：取消氣血 −5%
             skill: { name: '九霄神雷', type: 'damage', cooldown: 7, mult: 7 },
           },
         ],
@@ -703,7 +703,8 @@ const CONFIG = {
             // 2026-11-14 第二次調整（使用者同意）：開戰立即施放（×0.5）→ 每場戰鬥首次冷卻減半
             { id: 'spellFirst', name: '先發制人', desc: '每場戰鬥第一次施放技能，冷卻減半', effect: { firstCooldownMult: 0.5 }, good: '狂暴、雷霆（速戰）' },
             // 2026-11-15 調整（使用者同意 S3）：取消技能倍率 −1，改成技能冷卻 −1 秒
-            { id: 'spellBody', name: '雷體', desc: '取消道途的氣血減少，技能冷卻 −1 秒', effect: { noHpPenalty: true, cooldownAdd: -1 }, good: '劇毒、雷霆（耐打）' },
+            // v1.2 調整（使用者決定，PLAN.md 2.31）：法修沒有氣血減少了，改成氣血 +10%
+            { id: 'spellBody', name: '雷體', desc: '氣血 +10%，技能冷卻 −1 秒', effect: { hpPctAdd: 0.1, cooldownAdd: -1 }, good: '劇毒、雷霆（耐打）' },
           ],
           [
             { id: 'spellChain', name: '連雷', desc: '技能施放後 30% 機率再施放一次', effect: { recastChance: 0.3 }, good: '再生' },
@@ -800,9 +801,10 @@ const CONFIG = {
     qilinSummon: { key: 'qilin', cost: 1000, rarity: 5 },
     awaken: {
       cost: 150,
-      scaleMult: 1.3,
+      // v1.2（PLAN.md 2.31）：Boss 戰變長、先手的比重下降，覺醒加成 1.3 → 1.6、共鳴 2% → 3%（先手保留）
+      scaleMult: 1.6,
       opener: true,
-      resonance: { atkPct: 0.02, hpPct: 0.02 },
+      resonance: { atkPct: 0.03, hpPct: 0.03 },
       skills: {
         fox: { name: '九尾狐火', buffCritRate: 0.1, buffCritDmg: 0.3, buffSec: 3, desc: '命中後 3 秒內，主角會心率 +10%、會心傷害 +30%' },
         turtle: { name: '玄武鎮岳', buffDmgTaken: 0.35, buffSec: 3, desc: '施放後 3 秒內，主角受到的傷害 −35%' },
@@ -1052,7 +1054,8 @@ const CONFIG = {
     //   使用者規則：模擬中 30 天自然達成率超過 50% 的，天劫門檻往上調到低於 50%（調整紀錄見 PLAN.md 2.27 第 10 段）
     //   2026-11-20 使用者決定（PR #5 審閱）：毫髮無傷、首戰告捷改條件（不再只調天劫）；絕處逢生回到 3 重、改成一般成就
     //     firstRun：這一輪第一次通過第 100 關（而且 maxFury 0 = 沒輸過）；aboveBest：天劫 ≥ 之前打倒最終 Boss 的最高天劫 + aboveBest
-    { id: 'flawless', name: '毫髮無傷', desc: '天劫 {tier} 重以上，戰鬥 {time} 秒以上而且完全沒受傷，打倒最終 Boss', type: 'stat:flawlessFinal', target: 1, reward: { stones: 80 }, challenge: true, final: { minTier: 5, flawless: true, minTime: 5 } },
+    // v1.2（2026-11-25 使用者決定，PLAN.md 2.31 第 15 段）：Z1 後 Boss 戰變長，minTime 5 → 10 秒
+    { id: 'flawless', name: '毫髮無傷', desc: '天劫 {tier} 重以上，戰鬥 {time} 秒以上而且完全沒受傷，打倒最終 Boss', type: 'stat:flawlessFinal', target: 1, reward: { stones: 80 }, challenge: true, final: { minTier: 5, flawless: true, minTime: 10 } },
     { id: 'lastStand', name: '絕處逢生', desc: '天劫 {tier} 重以上，護命觸發後仍打倒最終 Boss', type: 'stat:lastStandFinal', target: 1, reward: { stones: 60 }, final: { minTier: 3, lastStand: true } },
     { id: 'firstTry', name: '首戰告捷', desc: '這一輪第一次挑戰，就打倒天劫比之前最高紀錄高 {above} 重以上的最終 Boss', type: 'stat:firstTryFinal', target: 1, reward: { stones: 80 }, challenge: true, final: { firstRun: true, maxFury: 0, aboveBest: 2 } },
     { id: 'lonewolf', name: '孤身斬魔', desc: '天劫 {tier} 重以上，沒有靈獸上陣就打倒最終 Boss', type: 'stat:lonewolfFinal', target: 1, reward: { stones: 80 }, challenge: true, final: { minTier: 3, noBeast: true } },
@@ -1324,7 +1327,9 @@ const CONFIG = {
     cooldownHours: 48,
     // 2026-11-20 使用者決定（D1 方案 Z2，PLAN.md 2.27）：攻擊倍率 1.3 → 1.23（氣血維持 1.3）。
     //   劍修、法修的實力天劫不變；體修的護體在 Boss 不再一擊秒殺時有用，第 28 天從比劍修少 0.8 層變成多約 0.3 層
-    tribulation: { hpMult: 1.3, atkMult: 1.23, pointsPerTier: 0.3, aboveCleared: 1 },
+    // v1.2 Z1（2026-11-25 使用者決定，PLAN.md 2.31）：氣血 1.3 → 1.37、攻擊 1.23 → 1.12（Boss 一擊約主角氣血的 2 倍，劍修、法修的氣血有價值）；
+    //   shieldPierce：天劫（1 重以上）的主線妖獸無視主角護盾減傷的比例（體修的護盾在天劫裡 × 0.25；天劫 0 層、鎮妖塔、秘境不受影響）
+    tribulation: { hpMult: 1.37, atkMult: 1.12, shieldPierce: 0.75, pointsPerTier: 0.3, aboveCleared: 1 },
     // 飛升天賦：每級花費 = round(cost × costGrowth^目前等級)；max 省略 = 沒有上限
     //   kind：stat 屬性、resource 資源、convenience 便利
     //   atk／hp：攻擊／氣血 × (1 + per × 等級)，與其他加成相乘

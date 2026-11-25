@@ -21,12 +21,12 @@ function getDaoTierConfig(path = state.dao.path, tier = state.dao.tier) {
   return tiers[Math.min(Math.max(1, tier), tiers.length) - 1];
 }
 
-/** 目前道途的屬性加成（沒選時為空物件；「雷體」天賦取消氣血減少） */
+/** 目前道途的屬性加成（沒選時為空物件；「雷體」天賦氣血 +10%：hpPctAdd，v1.2） */
 function getDaoBonus() {
   const t = getDaoTierConfig();
   if (!t) return {};
   const fx = getDaoTalentEffect();
-  if (fx.noHpPenalty && (t.bonus.hpPct || 0) < 0) return { ...t.bonus, hpPct: 0 };
+  if (fx.hpPctAdd) return { ...t.bonus, hpPct: (t.bonus.hpPct || 0) + fx.hpPctAdd };
   return t.bonus;
 }
 
