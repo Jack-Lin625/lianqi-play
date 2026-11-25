@@ -209,9 +209,11 @@ function processOpenedItems(items, auto = false) {
   const pending = [];
 
   let salvageIron = 0; // 神品分解的玄鐵
+  let salvageMarrow = 0; // 神品分解的神髓（神品煉化開放後，v1.1 V2）
   const salvage = (it) => {
     salvageGold += getSalvageGold(it);
     salvageIron += getSalvageIron(it);
+    salvageMarrow += getSalvageMarrow(it);
     salvagedCount++;
   };
 
@@ -240,6 +242,7 @@ function processOpenedItems(items, auto = false) {
 
   state.gold += salvageGold;
   state.materials.iron += salvageIron;
+  state.materials.marrow += salvageMarrow;
   state.pendingItems.push(...pending);
 
   return {
@@ -247,6 +250,7 @@ function processOpenedItems(items, auto = false) {
     counts,
     salvageGold, // 這次分解得到的靈石
     salvageIron, // 這次分解得到的玄鐵（神品）
+    salvageMarrow, // 這次分解得到的神髓（神品，煉化開放後）
     salvagedCount,
     pendingCount: pending.length,
     kept: pending, // 保留下來（待決定）的法寶
@@ -273,6 +277,7 @@ function equipItem(item) {
     gold = getSalvageGold(old);
     state.gold += gold;
     state.materials.iron += getSalvageIron(old);
+    state.materials.marrow += getSalvageMarrow(old);
   }
   state.equipped[item.slot] = item;
   removePending(item);
@@ -289,6 +294,7 @@ function salvageItem(item) {
   const gold = getSalvageGold(item);
   state.gold += gold;
   state.materials.iron += getSalvageIron(item);
+  state.materials.marrow += getSalvageMarrow(item);
   removePending(item);
   return gold;
 }

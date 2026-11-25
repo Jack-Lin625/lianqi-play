@@ -314,7 +314,7 @@ function showOpenSummary(result) {
      <div class="sum-counts">${counts}</div>
      <div class="sub-title">${ri('star')}保留 ${result.pendingCount} 件</div>
      <div class="sum-kept-list">${kept || '<div class="queue-hint">沒有比身上更好的法寶</div>'}</div>
-     <div class="sum-salvage">分解 ${result.salvagedCount} 件，得 ${ri('gold')}<b>${fmtNum(result.salvageGold)}</b></div>
+     <div class="sum-salvage">分解 ${result.salvagedCount} 件，得 ${ri('gold')}<b>${fmtNum(result.salvageGold)}</b>${result.salvageMarrow ? `、${ri('marrow')}神髓 <b>${fmtNum(result.salvageMarrow)}</b>` : ''}</div>
      <div class="modal-buttons"><button class="btn-primary btn-close">${result.pendingCount ? '逐件比較' : '確定'}</button></div>`
   );
   modal.querySelector('.btn-close').addEventListener('click', closeModal);
@@ -329,7 +329,7 @@ function showOpenResult(result) {
     .join('');
   const lines = [];
   if (result.salvagedCount > 0) {
-    lines.push(`分解 ${result.salvagedCount} 件，得 ${ri('gold')} <b>${fmtNum(result.salvageGold)}</b>`);
+    lines.push(`分解 ${result.salvagedCount} 件，得 ${ri('gold')} <b>${fmtNum(result.salvageGold)}</b>${result.salvageMarrow ? `、${ri('marrow')}神髓 <b>${fmtNum(result.salvageMarrow)}</b>` : ''}`);
   }
   if (result.pendingCount > 0) {
     lines.push(`有 <b>${result.pendingCount}</b> 件${result.stopTriggered ? '符合目標的' : '更好的'}法寶！`);

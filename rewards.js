@@ -2,7 +2,7 @@
 /* =========================================================
  * rewards.js — 發放獎勵（商店、儲值、成就、簽到、圖鑑共用）
  *
- * 獎勵格式：{ gold, keys, stones, eggs, essence, iron, items: [{ rarity, realm? }], beast: { key, rarity }, loot: '隨機表 id', cosmetic, doubleHours }
+ * 獎勵格式：{ gold, keys, stones, eggs, essence, iron, marrow（神髓，v1.1 V2）, items: [{ rarity, realm? }], beast: { key, rarity }, loot: '隨機表 id', cosmetic, doubleHours }
  * 「發放」與「付款」完全分開：這裡只負責把獎勵加到存檔，不知道錢從哪裡來。
  * ========================================================= */
 
@@ -33,7 +33,7 @@ function rollLoot(tableId) {
  */
 function grantRewards(reward, source = '') {
   /** @type {RewardGot} */
-  const got = { gold: 0, keys: 0, stones: 0, eggs: 0, essence: 0, iron: 0, items: [], beasts: [], rolled: [], source };
+  const got = { gold: 0, keys: 0, stones: 0, eggs: 0, essence: 0, iron: 0, marrow: 0, items: [], beasts: [], rolled: [], source };
   /** @param {Reward} r */
   const add = (r) => {
     if (r.gold) (state.gold += r.gold), (got.gold += r.gold);
@@ -41,6 +41,7 @@ function grantRewards(reward, source = '') {
     if (r.stones) (state.upgradeStones += r.stones), (got.stones += r.stones);
     if (r.eggs) (state.beasts.eggs += r.eggs), (got.eggs += r.eggs);
     if (r.essence) (state.beasts.essence += r.essence), (got.essence += r.essence);
+    if (r.marrow) (state.materials.marrow += r.marrow), (got.marrow += r.marrow);
     if (r.iron) {
       const iron = isAscIronSource(source) ? Math.round(r.iron * getAscIncomeMult()) : r.iron; // 聚寶（飛升天賦）
       state.materials.iron += iron;
@@ -88,7 +89,7 @@ function mergeRewards(list) {
   /** @type {Reward} */
   const out = {};
   for (const r of list) {
-    for (const k of ['gold', 'keys', 'stones', 'eggs', 'essence', 'iron', 'doubleHours', 'divinePick']) if (r[k]) out[k] = (out[k] || 0) + r[k];
+    for (const k of ['gold', 'keys', 'stones', 'eggs', 'essence', 'iron', 'marrow', 'doubleHours', 'divinePick']) if (r[k]) out[k] = (out[k] || 0) + r[k];
     if (r.items) out.items = [...(out.items || []), ...r.items];
     if (r.loot) out.loots = [...(out.loots || []), r.loot];
     if (r.loots) out.loots = [...(out.loots || []), ...r.loots];
@@ -104,10 +105,10 @@ function mergeRewards(list) {
  */
 function mergeRewardGot(list) {
   /** @type {RewardGot} */
-  const out = { gold: 0, keys: 0, stones: 0, eggs: 0, essence: 0, iron: 0, items: [], beasts: [], rolled: [], source: '' };
+  const out = { gold: 0, keys: 0, stones: 0, eggs: 0, essence: 0, iron: 0, marrow: 0, items: [], beasts: [], rolled: [], source: '' };
   for (const g of list) {
     if (!g) continue;
-    for (const k of ['gold', 'keys', 'stones', 'eggs', 'essence', 'iron']) out[k] += g[k] || 0;
+    for (const k of ['gold', 'keys', 'stones', 'eggs', 'essence', 'iron', 'marrow']) out[k] += g[k] || 0;
     out.items.push(...g.items);
     out.beasts.push(...(g.beasts || []));
     out.rolled.push(...g.rolled);

@@ -8,7 +8,7 @@ const CONFIG = {
   // ---------- 存檔 ----------
   save: {
     key: 'chestIdleRPG_save', // localStorage 的 key
-    version: 17, // 1→2 道途；2→3 靈獸、每日任務、秘境購買；3→4 裝備外觀/套裝/強化/圖鑑、成就、簽到、商店、音量；4→5 福利、信箱、賽季戰令、累計儲值；5→6 開爐保底、靈獸蛋保底、Boss 戰意、秘境掃蕩紀錄；6→7 數值放大；7→8 功能開放表、開爐件數 13 檔；8→9 章節首殺獎勵（已通過的章節寄到信箱）；9→10 道途天賦（dao.talents）；10→11 每日任務池、每週任務、活躍度寶箱、月曆簽到；11→12 飛升（state.ascension）；12→13 爐階 21～30、神品、天劫里程碑（ascension.bestFinalTier 等）；13→14 第 2 次飛升送神品（已飛升 2 次以上寄到信箱補發）；14→15 靈獸覺醒（beasts.owned.*.awakened）；15→16 存檔保護（state.backup）；16→17 鎮妖塔每日塔俸（dungeons.tower.sweepDate）
+    version: 19, // 1→2 道途；2→3 靈獸、每日任務、秘境購買；3→4 裝備外觀/套裝/強化/圖鑑、成就、簽到、商店、音量；4→5 福利、信箱、賽季戰令、累計儲值；5→6 開爐保底、靈獸蛋保底、Boss 戰意、秘境掃蕩紀錄；6→7 數值放大；7→8 功能開放表、開爐件數 13 檔；8→9 章節首殺獎勵（已通過的章節寄到信箱）；9→10 道途天賦（dao.talents）；10→11 每日任務池、每週任務、活躍度寶箱、月曆簽到；11→12 飛升（state.ascension）；12→13 爐階 21～30、神品、天劫里程碑（ascension.bestFinalTier 等）；13→14 第 2 次飛升送神品（已飛升 2 次以上寄到信箱補發）；14→15 靈獸覺醒（beasts.owned.*.awakened）；15→16 存檔保護（state.backup）；16→17 鎮妖塔每日塔俸（dungeons.tower.sweepDate）；17→18 神品煉化（refine、materials.marrow；已飛升 15 次以上直接開放、贈禮寄到信箱）；18→19 魂契（beasts.pact）
     autoSaveIntervalMs: 10000, // 自動存檔間隔
     // v10 以前的三個固定每日任務（v10→v11 遷移時，「已完成但沒領」的照原本的獎勵自動發放）
     legacyDailyTasks: [
@@ -19,7 +19,7 @@ const CONFIG = {
   },
 
   // ---------- 版本（路線圖 C4）：sw.js 的 VERSION 要一樣；發布新版時兩個一起改，玩家才會看到「有新版本」 ----------
-  app: { version: '1.0.1' },
+  app: { version: '1.1.0' },
 
   // ---------- 存檔保護（路線圖 C1，PLAN.md 2.26；backup.js） ----------
   //   自動備份：最多 slots 份（最舊的先刪），每 intervalMinutes 分鐘在線一份、每天第一次上線一份；存在 localStorage 的 autoKey
@@ -43,7 +43,7 @@ const CONFIG = {
   //   gold 靈石、keys 爐火符、stones 仙玉、iron 玄鐵、essence 靈獸精魄
   //   stats 角色、怪物、法寶的攻擊／氣血／護體（戰力跟著放大；會心率、身法等比例屬性不放大）
   //   靈獸蛋是道具（一顆孵一隻），不放大
-  scale: { gold: 1000, keys: 10, stones: 10, iron: 10, essence: 10, stats: 10000000 },
+  scale: { gold: 1000, keys: 10, stones: 10, iron: 10, essence: 10, marrow: 10, stats: 10000000 }, // marrow：神髓（v1.1 V2）
 
   // ---------- 新手初始資源 ----------
   newPlayer: {
@@ -283,6 +283,12 @@ const CONFIG = {
     // B3（PLAN.md 2.25）：開放時送一隻覺醒的精魄。已飛升 3 次以上的舊存檔，載入後照常播放演出、發贈禮
     { id: 'beastAwaken', name: '靈獸覺醒', kind: 'feature', cond: { ascensions: 3 }, page: 'beast', gift: { essence: 150 },
       hint: '5 星靈獸可以用精魄覺醒：被動與技能變強、每場戰鬥先手出手、技能換成覺醒技；每覺醒一隻，不上陣也有攻擊、氣血加成（覺醒共鳴）。附贈一隻覺醒所需的精魄。' },
+    // v1.1 V2（PLAN.md 2.29）：開放時送神髓 240（基準單位，遊戲中 2,400；六個部位各升 1 星）。已飛升 15 次以上的舊存檔，遷移時直接開放、贈禮寄到信箱
+    { id: 'divineRefine', name: '神品煉化', kind: 'feature', cond: { ascensions: 15 }, page: 'enhance', gift: { marrow: 240 },
+      hint: '分解神品會得到神髓；在強化分頁用神髓替穿著神品的部位煉化升星，每星神品主屬性 +3%（每部位 10 星，換神品星數保留）。附贈的神髓夠六個部位各升 1 星。' },
+    // v1.1 V3（PLAN.md 2.30）：魂契與召喚麒麟。不送贈禮（手上存的精魄就是贈禮）；已飛升 18 次以上的舊存檔，載入後照常播放演出
+    { id: 'soulPact', name: '魂契', kind: 'feature', cond: { ascensions: 18 }, page: 'beast',
+      hint: '在靈獸分頁用精魄締結魂契：每一級主角攻擊、氣血 +1%（不必上陣、沒有上限、飛升不重置）。還沒有麒麟的道友，也可以用精魄召喚一隻仙品麒麟（限一次）。' },
   ],
 
   // ---------- 開爐件數檔位（功能開放表的一部分） ----------
@@ -786,6 +792,12 @@ const CONFIG = {
     //   opener：先手，每場戰鬥開始立刻出手一次（含覺醒技效果），之後照原本冷卻（battle.js 的 createBattle）
     //   resonance：覺醒共鳴，每覺醒一隻（不必上陣），主角加成 × 隻數（和其他加成相乘；一般靈獸 5 隻＋麒麟最多 6 隻）
     //   skills：覺醒技，name 取代技能名稱，其他欄位覆蓋 starSkills.effects（4 星專屬效果；buffCritDmg 會心傷害 +）
+    // 魂契（v1.1 V3，2026-11-25 使用者確認，PLAN.md 2.30）：功能開放表 soulPact（第 18 次飛升）後開放。
+    //   全體一個等級（state.beasts.pact），沒有上限、飛升不重置；每一級主角 perLevel（和覺醒共鳴同一組靈獸加成，不必上陣）。
+    //   升到第 L 級的精魄（基準單位）= costBase + costStep × (L − 1)
+    soulPact: { costBase: 100, costStep: 20, perLevel: { atkPct: 0.01, hpPct: 0.01 } },
+    // 召喚麒麟（v1.1 V3）：和魂契同時開放，還沒有麒麟時花 cost 精魄（基準單位）得到 rarity 品 1 星的麒麟（每個角色一次）
+    qilinSummon: { key: 'qilin', cost: 1000, rarity: 5 },
     awaken: {
       cost: 150,
       scaleMult: 1.3,
@@ -935,6 +947,10 @@ const CONFIG = {
     //   之後開爐開到同一件外觀時，照常記成實際品階（recordCodex 的「品階較高就更新」），「兌」字自然消失
     //   price：每種仙玉（基準單位）；minAscensions：第幾次飛升後開放（和境界套組加成生效的時間相同）
     codexExchange: { minAscensions: 1, price: 200, seenValue: -1 },
+    // 神品煉化（v1.1 V2，2026-11-24 使用者確認，PLAN.md 2.29）：功能開放表 divineRefine（第 15 次飛升）後，
+    //   每分解一件神品得 marrowPerDivine 神髓（基準單位；開放前分解的不給）；用神髓替部位煉化升星（星數屬於部位，換神品保留）。
+    //   這個部位穿著神品時，主屬性再 ×(1 + 星數 × statPerStar)（和強化倍率相乘）。costs[i] = 升到第 i+1 星的神髓（基準單位）
+    refine: { maxStar: 10, statPerStar: 0.03, marrowPerDivine: 1, costs: [40, 55, 75, 105, 145, 200, 280, 390, 550, 770] },
     codexSets: {
       realmMinAscensions: 1,
       realm: { atkPct: 0.01, hpPct: 0.01 },
@@ -1058,6 +1074,12 @@ const CONFIG = {
     { id: 'beasts6', name: '百獸之主', desc: '六種靈獸全部結緣', type: 'beastsOwned', target: 6, reward: { stones: 50 } },
     { id: 'enhance10', name: '千錘百鍊', desc: '任一部位強化到 +10', type: 'enhanceMax', target: 10, reward: { iron: 5 } },
     { id: 'enhance15', name: '神兵天成', desc: '任一部位強化到 +15', type: 'enhanceMax', target: 15, reward: { stones: 30 } },
+    // v1.1 V2：神品煉化（refineStars = 六個部位合計星數）
+    { id: 'refine30', name: '神兵初煉', desc: '神品煉化：六個部位合計 30 星', type: 'refineStars', target: 30, reward: { stones: 200 } },
+    { id: 'refine60', name: '六神圓滿', desc: '神品煉化：六個部位全部 10 星（60 星）', type: 'refineStars', target: 60, reward: { stones: 300, cosmetic: 'shenlian' } },
+    // v1.1 V3：魂契等級
+    { id: 'pact10', name: '魂契初成', desc: '魂契達到第 10 級', type: 'pactLevel', target: 10, reward: { stones: 200 } },
+    { id: 'pact20', name: '萬靈同契', desc: '魂契達到第 20 級', type: 'pactLevel', target: 20, reward: { stones: 300, cosmetic: 'wanling' } },
     { id: 'dao', name: '擇道而行', desc: '選擇一條道途', type: 'daoChosen', target: 1, reward: { stones: 5 } },
     { id: 'dao2', name: '二轉大成', desc: '道途突破二轉', type: 'daoTier', target: 2, reward: { stones: 20 } },
     { id: 'boss50', name: '斬妖除魔', desc: '累計擊敗 50 隻妖王', type: 'stat:bossKills', target: 50, reward: { stones: 10 } },
@@ -1150,6 +1172,8 @@ const CONFIG = {
       zixiao: { name: '紫霄劫衣', color: '#4a2a7a', aura: '#d7b8ff', price: null, source: '天劫 18 重打倒最終 Boss（飛升）' },
       taixu: { name: '太虛道袍', color: '#1d2e45', aura: '#9ff0ff', price: null, source: '天劫 24 重打倒最終 Boss（飛升）' },
       wanbao: { name: '萬寶霞衣', color: '#7a4a1a', aura: '#ffd98a', price: null, source: '成就「萬寶歸宗」（圖鑑全收集）' },
+      wanling: { name: '萬靈契袍', color: '#1f4a3a', aura: '#9ff5c8', price: null, source: '成就「萬靈同契」（魂契第 20 級）' },
+      shenlian: { name: '神煉金霞衣', color: '#7a4a12', aura: '#ffd27a', price: null, source: '成就「六神圓滿」（神品煉化 60 星）' },
       zhenyao: { name: '鎮妖玄袍', color: '#2b3a2a', aura: '#a8f0a0', price: null, source: '成就「鎮妖登峰」（鎮妖塔第 160 層）' },
     },
     // 儲值（模擬版；價格單位為新台幣）
@@ -1325,8 +1349,8 @@ const CONFIG = {
     startMax: 81,
     // 聚寶的玄鐵加成套用在哪些獎勵來源（grantRewards 的 source；儲值、仙玉商店、信件等不加）
     ironIncomeSources: ['towerSweep', 'daily', 'weekly', 'activity', 'autoClaim', 'achievement', 'codex', 'signin', 'pass', 'chapter', 'market', 'login', 'newbie'],
-    // 第幾次飛升後開放（飛升頁「之後開放」的清單；實際條件在功能開放表 chestBeyond、beastAwaken、chestBeyond30）
-    unlocks: { talents: 1, chestTier25: 2, beastAwaken: 3, chestTier30: 5 },
+    // 第幾次飛升後開放（飛升頁「之後開放」的清單；實際條件在功能開放表 chestBeyond、beastAwaken、chestBeyond30、divineRefine、soulPact）
+    unlocks: { talents: 1, chestTier25: 2, beastAwaken: 3, chestTier30: 5, divineRefine: 15, soulPact: 18 },
     previewSteps: [91, 95, 99, 100], // 飛升頁「再推到第 Y 關可得 Z」的目標關卡
     // 天劫里程碑（B2，使用者已確認 2026-11-18）：第一次在天劫 tier 層以上打倒最終 Boss 時發放一次（跳層時一起發）
     //   divinePick：神品法寶「6 個部位自選一件」（飛升頁選部位）

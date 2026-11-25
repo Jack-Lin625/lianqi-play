@@ -4784,6 +4784,56 @@ body.slowmo .float-num {
   font-size: 12px;
 }
 
+/* 神品煉化（v1.1 V2） */
+.refine-head {
+  padding-bottom: 8px;
+  margin-bottom: 4px;
+  border-bottom: 1px dotted var(--paper-line);
+}
+
+.refine-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.refine-total b {
+  color: var(--cinnabar);
+}
+
+.refine-all {
+  width: auto;
+  margin-top: 0;
+  padding: 0 14px;
+  font-size: 14px;
+  letter-spacing: 0;
+}
+
+.enh-refine {
+  margin-top: 4px;
+  font-size: 11.5px;
+  color: var(--gold-dk);
+}
+
+.enh-refine.off {
+  color: var(--ink-soft);
+  opacity: 0.7;
+}
+
+.refine-btn {
+  width: auto;
+  margin-top: 0;
+  padding: 0 10px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.refine-max {
+  font-size: 12px;
+}
+
 .reroll-list {
   display: flex;
   flex-direction: column;
@@ -4922,6 +4972,41 @@ body.slowmo .float-num {
 
 .awaken-res b {
   color: var(--gold-dk);
+}
+
+/* 魂契、召喚麒麟（v1.1 V3） */
+.pact-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pact-line b {
+  color: var(--jade);
+}
+
+.pact-line.locked {
+  font-size: 12px;
+  color: var(--ink-soft);
+}
+
+.pact-btns {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.pact-btn {
+  min-height: 34px;
+  font-size: 13px;
+  padding: 4px 10px;
+}
+
+.btn-summon {
+  width: 100%;
+  min-height: 34px;
+  font-size: 13px;
+  margin-top: 6px;
 }
 
 .awaken-big {
@@ -5292,9 +5377,13 @@ button,
 .shop-buy,
 .btn-dg.enh-btn,
 .enh-reroll,
+.refine-btn,
+.refine-all,
 .talent-pick,
 .beast-btns .btn-secondary,
 .btn-awaken,
+.pact-btn,
+.btn-summon,
 .pass-cell {
   min-height: 40px;
 }

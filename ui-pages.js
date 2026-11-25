@@ -36,6 +36,7 @@ function rewardSpecHTML(r) {
   if (r.eggs) parts.push(`${ri('egg')}×${r.eggs}`);
   if (r.essence) parts.push(`${ri('essence')}×${r.essence}`);
   if (r.iron) parts.push(`${ri('iron')}玄鐵×${r.iron}`);
+  if (r.marrow) parts.push(`${ri('marrow')}神髓×${fmtNum(r.marrow)}`);
   if (r.doubleHours) parts.push(`雙倍收益 ${r.doubleHours} 小時`);
   for (const spec of r.items || []) parts.push(`<span style="color:${CONFIG.rarities[spec.rarity].color}">${CONFIG.rarities[spec.rarity].name}法寶</span>`);
   if (r.beast) parts.push(`${CONFIG.rarities[r.beast.rarity].name}${CONFIG.beasts.species[r.beast.key].name}`);
@@ -54,6 +55,7 @@ function rewardGotHTML(got) {
   if (got.eggs) parts.push(`<span>${ri('egg')}+${got.eggs}</span>`);
   if (got.essence) parts.push(`<span>${ri('essence')}+${got.essence}</span>`);
   if (got.iron) parts.push(`<span>${ri('iron')}玄鐵+${got.iron}</span>`);
+  if (got.marrow) parts.push(`<span>${ri('marrow')}神髓+${fmtNum(got.marrow)}</span>`);
   if (got.doubleHours) parts.push(`<span>${ri('star')}雙倍收益 ${got.doubleHours} 小時</span>`);
   if (got.cosmetic) parts.push(`<span>外觀：${CONFIG.shop.cosmetics[got.cosmetic].name}</span>`);
   if (got.divinePick) parts.push(`<span style="color:${CONFIG.rarities[CONFIG.divineRarity].color}">${ri('star')}神品自選 ×${got.divinePick}（到飛升頁選部位）</span>`);

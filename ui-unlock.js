@@ -98,5 +98,6 @@ function rewardNamesHTML(r) {
   if (r.eggs) parts.push(`${ri('egg')}靈獸蛋 ×${r.eggs}`);
   if (r.iron) parts.push(`${ri('iron')}玄鐵 ${fmtNum(r.iron)}`);
   if (r.essence) parts.push(`${ri('essence')}${fmtNum(r.essence)}`);
+  if (r.marrow) parts.push(`${ri('marrow')}神髓 ${fmtNum(r.marrow)}`);
   return parts.join('、');
 }

@@ -9,11 +9,11 @@
  * ========================================================= */
 
 /** 獎勵物件裡的欄位 → 倍率種類（靈獸蛋 eggs 不放大） */
-const REWARD_SCALE_KEYS = { gold: 'gold', keys: 'keys', stones: 'stones', iron: 'iron', essence: 'essence' };
+const REWARD_SCALE_KEYS = { gold: 'gold', keys: 'keys', stones: 'stones', iron: 'iron', essence: 'essence', marrow: 'marrow' };
 
 /**
  * 「獎勵物件」所在的位置（* = 陣列的每一項或物件的每個值）
- * 物件裡的 gold／keys／stones／iron／essence 依倍率放大
+ * 物件裡的 gold／keys／stones／iron／essence／marrow 依倍率放大
  */
 const REWARD_PATHS = [
   'dailyTaskRules.reward',
@@ -39,7 +39,7 @@ const REWARD_PATHS = [
   'chapterRewards.*', // 章節首殺獎勵的玄鐵
   'ascension.tierMilestones.*.reward', // 天劫里程碑（B2）
   'ascension.divineGift.reward', // 第 2 次飛升送的神品
-  'features.*.gift', // 功能開放贈禮（B3：靈獸覺醒的精魄）
+  'features.*.gift', // 功能開放贈禮（B3：靈獸覺醒的精魄；v1.1 V2：神品煉化的神髓）
 ];
 
 /**
@@ -92,10 +92,15 @@ const SCALE_FIELDS = [
   ['beasts.starCost.*', 'essence'],
   ['beasts.essenceByRarity.*', 'essence'],
   ['beasts.awaken.cost', 'essence'], // B3：覺醒消耗
+  ['beasts.soulPact.costBase', 'essence'], // v1.1 V3：魂契
+  ['beasts.soulPact.costStep', 'essence'],
+  ['beasts.qilinSummon.cost', 'essence'], // v1.1 V3：召喚麒麟
   ['gear.enhance.goldBase', 'gold'],
   ['gear.enhance.ironCost.*', 'iron'],
   ['gear.reroll.ironCost.*', 'iron'],
   ['gear.codexExchange.price', 'stones'], // v1.1 V1：圖鑑兌換
+  ['gear.refine.marrowPerDivine', 'marrow'], // v1.1 V2：分解一件神品的神髓
+  ['gear.refine.costs.*', 'marrow'], // v1.1 V2：每一星的神髓
   // 商店與儲值
   ['shop.market.refreshCost.*', 'stones'],
   ['shop.market.pool.*.price', 'gold'],

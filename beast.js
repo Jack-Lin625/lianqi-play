@@ -2,10 +2,11 @@
 /* =========================================================
  * beast.js — 靈獸
  *
- * state.beasts = { eggs, essence, owned, deployed }
+ * state.beasts = { eggs, essence, owned, deployed, pact }
  *   eggs：靈獸蛋；essence：靈獸精魄（升星用）
  *   owned：{ 種類: { rarity, star, awakened } }，每種只保留一隻（取最高品階）；awakened：已覺醒（B3，存檔 v15）
  *   deployed：上陣中的種類（最多 1 隻，斬殺築基期十層妖王後 2 隻）
+ *   pact：魂契等級（v1.1 V3，存檔 v19；功能開放表 soulPact 後才能升級）
  * 數值都在 CONFIG.beasts；被動加成在 calcStats 套用，自動攻擊在 battle.js 執行。
  * ========================================================= */
 
@@ -92,6 +93,7 @@ function getBeastBonus(deployed = state.beasts.deployed) {
   }
   if (bond && bond.bonus) for (const [k, v] of Object.entries(bond.bonus)) total[k] = (total[k] || 0) + v;
   for (const [k, v] of Object.entries(getAwakenResonance())) total[k] = (total[k] || 0) + v; // 覺醒共鳴（不必上陣）
+  for (const [k, v] of Object.entries(getPactBonus())) total[k] = (total[k] || 0) + v; // 魂契（v1.1 V3，不必上陣）
   return total;
 }
 
@@ -224,5 +226,90 @@ function toggleDeployBeast(key) {
     list.push(key);
   }
   onEquipmentChanged();
+  return { ok: true };
+}
+
+// ---------- 魂契、召喚麒麟（v1.1 V3，PLAN.md 2.30） ----------
+
+/** 目前的魂契等級 */
+function getPactLevel() {
+  return state.beasts.pact || 0;
+}
+
+/** 升到下一級（第 level + 1 級）需要的精魄：costBase + costStep × level */
+function getPactCost(level = getPactLevel()) {
+  const c = CONFIG.beasts.soulPact;
+  return c.costBase + c.costStep * level;
+}
+
+/** 魂契加成：每一級 perLevel × 等級（不必上陣） */
+function getPactBonus(level = getPactLevel()) {
+  /** @type {StatMap} */
+  const out = {};
+  if (!level) return out;
+  for (const [k, v] of Object.entries(CONFIG.beasts.soulPact.perLevel)) out[k] = v * level;
+  return out;
+}
+
+/** 不能升魂契的原因（可以升時回傳 null） */
+function getPactBlockReason() {
+  if (!isFeatureOpen('soulPact')) return getFeatureLockText('soulPact');
+  const cost = getPactCost();
+  if (state.beasts.essence < cost) return `靈獸精魄不足（需要 ${cost.toLocaleString()}）`;
+  return null;
+}
+
+/**
+ * 魂契升一級
+ * @returns {{ok: boolean, error?: string}}
+ */
+function upgradePact() {
+  const reason = getPactBlockReason();
+  if (reason) return { ok: false, error: reason };
+  state.beasts.essence -= getPactCost();
+  state.beasts.pact = getPactLevel() + 1;
+  onEquipmentChanged();
+  return { ok: true };
+}
+
+/**
+ * 全部升級：精魄用到不夠下一級為止
+ * @returns {{ok: boolean, error?: string, levels: number, spent: number}}
+ */
+function upgradePactAll() {
+  const reason = getPactBlockReason();
+  if (reason) return { ok: false, error: reason, levels: 0, spent: 0 };
+  let levels = 0;
+  let spent = 0;
+  while (state.beasts.essence >= getPactCost()) {
+    spent += getPactCost();
+    state.beasts.essence -= getPactCost();
+    state.beasts.pact = getPactLevel() + 1;
+    levels++;
+  }
+  onEquipmentChanged();
+  return { ok: true, levels, spent };
+}
+
+/** 不能召喚麒麟的原因（可以召喚時回傳 null） */
+function getQilinSummonBlockReason() {
+  const q = CONFIG.beasts.qilinSummon;
+  if (!isFeatureOpen('soulPact')) return getFeatureLockText('soulPact');
+  if (state.beasts.owned[q.key]) return `已經擁有${CONFIG.beasts.species[q.key].name}`;
+  if (state.beasts.essence < q.cost) return `靈獸精魄不足（需要 ${q.cost.toLocaleString()}）`;
+  return null;
+}
+
+/**
+ * 召喚麒麟：花精魄得到仙品 1 星麒麟（每個角色一次：已經有麒麟就不能召喚）
+ * @returns {{ok: boolean, error?: string}}
+ */
+function summonQilin() {
+  const reason = getQilinSummonBlockReason();
+  if (reason) return { ok: false, error: reason };
+  const q = CONFIG.beasts.qilinSummon;
+  state.beasts.essence -= q.cost;
+  addBeast(q.key, q.rarity);
+  trackStat('qilinSummon');
   return { ok: true };
 }

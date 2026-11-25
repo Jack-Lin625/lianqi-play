@@ -9,6 +9,7 @@
  *   state.chestLevel          → 煉器爐階數
  *   state.multiplier          → 一次開爐的件數（×1 / ×2 / ×5 / ×10）
  *   state.materials.iron      → 玄鐵（強化材料）
+ *   state.materials.marrow    → 神髓（神品煉化材料，v18）
  *   state.beasts.essence      → 靈獸精魄（升星材料）
  *   state.stage.chapter/level → 境界 / 層數（第 1 章 = 練氣期）
  *   state.dao                 → 道途（劍修 sword、法修 spell、體修 body）
@@ -67,12 +68,13 @@ function createDefaultState() {
     tutorial: { seen: [] }, // 已看過的新手引導
     dao: { path: null, tier: 1, talents: [null, null] }, // 道途：path = 'sword' | 'spell' | 'body' | null（未選），tier = 第幾轉，talents = 一轉／二轉選的天賦 id（null = 未選）
     // 靈獸：eggs 靈獸蛋、essence 靈獸精魄、owned 已擁有 { 種類: { rarity, star } }、deployed 上陣中的種類
-    beasts: { eggs: 0, essence: 0, owned: {}, deployed: [] },
+    beasts: { eggs: 0, essence: 0, owned: {}, deployed: [], pact: 0 }, // pact：魂契等級（v19）
     // 每日任務（daily.js）：date 對應的日期、tasks 抽到的題目（null = 還沒抽）、progress 計數器、claimed 已領的任務、chests 已開的活躍度寶箱
     daily: { date: todayString(), tasks: null, progress: {}, claimed: [], chests: [] },
     // ---- v4 ----
     enhance: defaultEnhance(), // 部位強化等級（換裝不會遺失）
-    materials: { iron: 0 }, // 玄鐵：強化 +6 以上的材料（每級需要的數量見 CONFIG.gear.enhance.ironCost）
+    materials: { iron: 0, marrow: 0 }, // 玄鐵：強化 +6 以上的材料（每級需要的數量見 CONFIG.gear.enhance.ironCost）；神髓：神品煉化的材料（v18）
+    refine: defaultEnhance(), // 神品煉化星數（v18，屬於部位，換神品保留；CONFIG.gear.refine）
     codex: { seen: {}, claimed: [] }, // 圖鑑：seen = { 外觀 id: 最高品階 }，claimed = 已領的收集獎勵
     stats: { opened: 0, kills: 0, hatched: 0, awakened: 0, mythics: 0, bossKills: 0, enhanceTries: 0, dungeonRuns: 0, loginDays: 0, lastLoginDate: '' },
     achievements: { done: [], claimed: [] },
@@ -399,6 +401,25 @@ const SAVE_MIGRATIONS = {
   // v16 → v17（D2）：鎮妖塔每日塔俸。新增 sweepDate（還沒領過）
   17: (data) => {
     if (isPlainObject(data.dungeons) && isPlainObject(data.dungeons.tower) && typeof data.dungeons.tower.sweepDate !== 'string') data.dungeons.tower.sweepDate = '';
+  },
+  // v17 → v18（v1.1 V2）：神品煉化。新增 refine（六個部位 0 星）、materials.marrow 0。
+  //   已飛升 15 次以上的存檔：直接開放（不播放演出，和功能開放表的舊存檔做法相同），開放贈禮寄到信箱補發一次
+  18: (data) => {
+    if (!isPlainObject(data.refine)) data.refine = defaultEnhance();
+    if (!isPlainObject(data.materials)) data.materials = { iron: 0 };
+    if (typeof data.materials.marrow !== 'number') data.materials.marrow = 0;
+    const f = getFeature('divineRefine');
+    if (!f || !isPlainObject(data.features) || !isPlainObject(data.features.open) || data.features.open.divineRefine !== undefined || !isCondMet(f.cond, data)) return;
+    data.features.open.divineRefine = Math.floor((data.features.playSeconds || 0) / 60);
+    if (!Array.isArray(data.mail)) data.mail = [];
+    if (typeof data.mailSeq !== 'number') data.mailSeq = 0;
+    data.mailSeq++;
+    data.mail.push({ id: data.mailSeq, title: '神品煉化開放贈禮', desc: `已飛升 ${f.cond.ascensions} 次以上，神品煉化已開放：分解神品得神髓，到強化分頁替穿著神品的部位煉化升星。這份神髓夠六個部位各升 1 星。`, reward: f.gift, time: Date.now() });
+  },
+  // v18 → v19（v1.1 V3）：魂契。新增 beasts.pact 0。
+  //   已飛升 18 次以上的存檔不在這裡開放：沒有贈禮，載入後由功能開放表照常開放、播放演出
+  19: (data) => {
+    if (isPlainObject(data.beasts) && typeof data.beasts.pact !== 'number') data.beasts.pact = 0;
   },
 };
 

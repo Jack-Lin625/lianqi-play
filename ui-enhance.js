@@ -24,6 +24,7 @@ function milestoneChipsHTML(slot) {
 function renderEnhance(force = false) {
   if (!pageActive('enhance', force)) return;
   const e = CONFIG.gear.enhance;
+  const refineOpen = isFeatureOpen('divineRefine');
   const rows = CONFIG.slotOrder
     .map((slot) => {
       const lv = getEnhanceLevel(slot);
@@ -44,6 +45,7 @@ function renderEnhance(force = false) {
           </div>
           <button class="btn-dg enh-btn" data-act="enhance" data-arg="${slot}" ${lackGold || lackIron ? 'disabled' : ''}>強化至 +${cost.next}</button>`;
       }
+      if (refineOpen) right += refineSideHTML(slot);
       const rerollCost = getRerollCost(item);
       const reroll = rerollCost ? `<button class="btn-secondary enh-reroll" data-act="reroll" data-arg="${slot}">洗練詞條 ${ri('iron')}${rerollCost}</button>` : '';
       return `<div class="enh-row">
@@ -53,6 +55,7 @@ function renderEnhance(force = false) {
           <div class="enh-item">${item ? itemDisplayName(item) : '未佩戴'}</div>
           <div class="enh-bonus">主屬性 +${Math.round(lv * e.statPerLevel * 100)}%${cost ? ` → +${Math.round(cost.next * e.statPerLevel * 100)}%` : ''}</div>
           <div class="enh-milestones">${milestoneChipsHTML(slot)}</div>
+          ${refineOpen ? refineInfoHTML(slot) : ''}
           ${reroll}
         </div>
         <div class="enh-side">${right}</div>
@@ -65,6 +68,7 @@ function renderEnhance(force = false) {
     <div class="enh-note">強化等級屬於部位，換上新法寶也會保留；強化到 +${e.milestones.levels.join('／+')} 時解鎖該部位的特效。${
       e.safeUntil >= e.maxLevel ? '<b>每次強化必定成功</b>。' : `+${e.safeUntil} 以前必定成功；之後有機率失敗，失敗會消耗材料但<b>不會降級</b>。`
     }玄鐵可從每日任務、上古妖王、坊市、圖鑑與成就取得，也能用來洗練法寶的詞條。</div>
+    ${refineOpen ? refineHeaderHTML() : ''}
     ${rows}
   </div>`);
   bindPanel(panel, {
@@ -87,8 +91,58 @@ function renderEnhance(force = false) {
       afterShopChange();
     },
     reroll: (slot) => showRerollModal(/** @type {Slot} */ (slot)),
+    refine: (slot) => {
+      const res = refineSlot(/** @type {Slot} */ (slot));
+      if (!res.ok) return toast(res.error);
+      playSound('upgrade');
+      toast(`${ri('marrow')} ${CONFIG.slots[slot].name}煉化成功：★${res.star}`);
+      afterShopChange();
+    },
+    refineAll: () => {
+      const res = refineAll();
+      if (!res.count) return toast('神髓不足，或沒有可以煉化的部位');
+      playSound('upgrade');
+      const parts = CONFIG.slotOrder.filter((s) => res.slots[s]).map((s) => `${CONFIG.slots[s].name} ★${getRefineStar(s)}`);
+      toast(`${ri('marrow')} 一鍵煉化 ${res.count} 星：${parts.join('、')}`, CONFIG.fx.toast.long);
+      afterShopChange();
+    },
   });
 }
+
+// ---------- 神品煉化（v1.1 V2，PLAN.md 2.29） ----------
+
+/** 強化分頁上方：神髓數量、說明、一鍵煉化 */
+function refineHeaderHTML() {
+  const r = CONFIG.gear.refine;
+  const total = getRefineTotalStars();
+  const max = r.maxStar * CONFIG.slotOrder.length;
+  return `<div class="refine-head">
+    <div class="sub-title">${icon('marrow')}神品煉化<small class="daily-reset">神髓 ${state.materials.marrow.toLocaleString()}</small></div>
+    <div class="enh-note">分解神品會得到神髓。穿著神品的部位可以用神髓煉化升星：每星神品主屬性 +${Math.round(r.statPerStar * 100)}%（每部位 ${r.maxStar} 星）。星數屬於部位，換上另一件神品也會保留；換成非神品時沒有加成。</div>
+    <div class="refine-total"><span>六個部位合計 <b>${total}</b> / ${max} 星</span>
+      <button class="btn-dg refine-all" data-act="refineAll" ${total >= max ? 'disabled' : ''}>一鍵煉化</button></div>
+  </div>`;
+}
+
+/** 每個部位：目前星數與加成 */
+function refineInfoHTML(slot) {
+  const r = CONFIG.gear.refine;
+  const star = getRefineStar(slot);
+  const cost = getRefineCost(slot);
+  const pct = (n) => Math.round(n * r.statPerStar * 100);
+  const item = state.equipped[slot];
+  const divine = item && getRarityIndex(item) === CONFIG.divineRarity;
+  return `<div class="enh-refine ${divine ? '' : 'off'}">${ri('marrow')}煉化 ★${star}/${r.maxStar}　神品主屬性 +${pct(star)}%${cost ? ` → +${pct(cost.next)}%` : ''}${divine ? '' : '（穿上神品才生效）'}</div>`;
+}
+
+/** 每個部位右側：煉化按鈕 */
+function refineSideHTML(slot) {
+  const cost = getRefineCost(slot);
+  if (!cost) return `<span class="enh-max refine-max">${ri('marrow')}★${CONFIG.gear.refine.maxStar} 圓滿</span>`;
+  const reason = getRefineBlockReason(slot);
+  return `<button class="btn-secondary refine-btn" data-act="refine" data-arg="${slot}" ${reason ? 'disabled' : ''} title="${reason || ''}">煉化 ★${cost.next} ${ri('marrow')}${cost.marrow.toLocaleString()}</button>`;
+}
+
 
 /** 一條詞條的文字 */
 function affixText(a) {

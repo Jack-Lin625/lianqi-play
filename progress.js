@@ -39,6 +39,10 @@ function getAchievementValue(a) {
       return getAwakenedCount();
     case 'daoFinals':
       return ['finalSword', 'finalSpell', 'finalBody'].filter((k) => Number(state.stats[k] || 0) > 0).length;
+    case 'refineStars':
+      return getRefineTotalStars(); // v1.1 V2：神品煉化合計星數
+    case 'pactLevel':
+      return getPactLevel(); // v1.1 V3：魂契等級
     case 'enhanceMax':
       return Math.max(0, ...Object.values(state.enhance));
     case 'daoChosen':

@@ -32,6 +32,8 @@ function ascendUnlocksHTML() {
     { at: u.chestTier25, name: '爐階 21～25、新品階「神品」', ready: true },
     { at: u.beastAwaken, name: '靈獸覺醒（5 星靈獸覺醒，換覺醒技）', ready: true },
     { at: u.chestTier30, name: '爐階 26～30', ready: true },
+    { at: u.divineRefine, name: '神品煉化（分解神品得神髓，替部位煉化升星）', ready: true },
+    { at: u.soulPact, name: '魂契（精魄升級，攻擊、氣血每級 +1%）、精魄召喚麒麟', ready: true },
   ];
   return rows
     .map((r) => {

@@ -2,7 +2,7 @@
 /* =========================================================
  * ui-beast.js — 靈獸分頁（從 ui.js 拆出，第五階段 6-4 加入羈絆與升星技能）
  *   孵化、上陣欄位、羈絆一覽（生效中的亮起）、靈獸卡片（升星技能 2／4 星）
- *   覺醒（B3）的卡片區塊、確認視窗、覺醒共鳴在 ui-beast-awaken.js
+ *   覺醒（B3）的卡片區塊、確認視窗、覺醒共鳴在 ui-beast-awaken.js；魂契與召喚麒麟（v1.1 V3）在 ui-beast-pact.js
  * ========================================================= */
 
 /** 星數顯示 ★★★☆☆ */
@@ -33,6 +33,7 @@ function renderBeasts(force = false) {
       <div class="hatch-count">靈獸蛋 <b>${st.eggs}</b></div>
       <div class="hatch-count">靈獸精魄 <b>${st.essence}</b></div>
       ${awakenResonanceHTML()}
+      ${soulPactHTML()}
       <div class="hatch-note">來源：妖獸潮第 5、10 波、鎮妖塔每 10 層、每日任務</div>
     </div>
     <div class="hatch-btns">
@@ -76,6 +77,7 @@ function renderBeasts(force = false) {
         <div class="beast-icon">${icon(sp.icon)}</div>
         <div class="beast-name">${sp.name}</div>
         <div class="beast-desc">${sp.onlyRarity !== undefined ? '只在仙品現世' : '尚未結緣'}</div>
+        ${qilinSummonHTML(key)}
       </div>`;
       continue;
     }
@@ -105,6 +107,7 @@ function renderBeasts(force = false) {
   const hatch = $('#btn-hatch');
   if (hatch) hatch.addEventListener('click', () => onHatch(1));
   bindAwakenButtons(panel);
+  bindPactButtons(panel);
   const hatch10 = $('#btn-hatch10');
   if (hatch10) hatch10.addEventListener('click', () => onHatch(10));
   $$('[data-deploy]', panel).forEach((el) =>

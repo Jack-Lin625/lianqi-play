@@ -345,6 +345,83 @@ function keepReroll() {
   pendingReroll = null;
 }
 
+// ---------- 神品煉化（v1.1 V2，PLAN.md 2.29） ----------
+// 星數屬於部位（state.refine，換神品保留）；只有這個部位穿著神品時，主屬性 ×(1 + 星數 × statPerStar)（equipment.js 的 getRefineMult）
+
+/** @param {Slot} slot */
+function getRefineStar(slot) {
+  return (state.refine && state.refine[slot]) || 0;
+}
+
+/** 六個部位合計星數（成就「神兵初煉」「六神圓滿」） */
+function getRefineTotalStars() {
+  return CONFIG.slotOrder.reduce((sum, s) => sum + getRefineStar(s), 0);
+}
+
+/**
+ * 升到下一星的神髓；已滿星回傳 null
+ * @param {Slot} slot
+ * @returns {{next: number, marrow: number}|null}
+ */
+function getRefineCost(slot) {
+  const r = CONFIG.gear.refine;
+  const star = getRefineStar(slot);
+  if (star >= r.maxStar) return null;
+  return { next: star + 1, marrow: r.costs[star] };
+}
+
+/**
+ * 不能煉化的原因（可以煉化回傳 null）
+ * @param {Slot} slot
+ */
+function getRefineBlockReason(slot) {
+  if (!isFeatureOpen('divineRefine')) return getFeatureLockText('divineRefine');
+  const item = state.equipped[slot];
+  if (!item || getRarityIndex(item) !== CONFIG.divineRarity) return '穿上神品才能煉化';
+  const cost = getRefineCost(slot);
+  if (!cost) return `已煉化到 ${CONFIG.gear.refine.maxStar} 星`;
+  if (state.materials.marrow < cost.marrow) return `神髓不足（需要 ${cost.marrow.toLocaleString()}）`;
+  return null;
+}
+
+/**
+ * 煉化一次（星數 +1）
+ * @param {Slot} slot
+ * @returns {{ok: boolean, error?: string, star?: number}}
+ */
+function refineSlot(slot) {
+  const reason = getRefineBlockReason(slot);
+  if (reason) return { ok: false, error: reason };
+  const cost = /** @type {{next: number, marrow: number}} */ (getRefineCost(slot));
+  state.materials.marrow -= cost.marrow;
+  state.refine[slot] = cost.next;
+  trackStat('refines');
+  onEquipmentChanged();
+  return { ok: true, star: cost.next };
+}
+
+/**
+ * 一鍵煉化：星數最低的部位先煉（同星數照部位順序），煉到神髓不夠為止
+ * @returns {{count: number, slots: Partial<Record<Slot, number>>}} 升了幾星、每個部位升了幾星
+ */
+function refineAll() {
+  /** @type {Partial<Record<Slot, number>>} */
+  const slots = {};
+  let count = 0;
+  for (;;) {
+    let pick = null;
+    for (const s of CONFIG.slotOrder) {
+      const item = state.equipped[s];
+      if (!item || getRarityIndex(item) !== CONFIG.divineRarity || !getRefineCost(s)) continue;
+      if (!pick || getRefineStar(s) < getRefineStar(pick)) pick = s;
+    }
+    if (!pick || !refineSlot(pick).ok) break;
+    slots[pick] = (slots[pick] || 0) + 1;
+    count++;
+  }
+  return { count, slots };
+}
+
 // ---------- 圖鑑 ----------
 
 /**

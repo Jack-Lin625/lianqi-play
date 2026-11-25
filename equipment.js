@@ -142,13 +142,14 @@ function getRarity(item) {
  * 把一件裝備的所有屬性（主 + 副）加總成 { key: value }
  * @param {Item|null} item
  * @param {number} enhanceLevel 該部位的強化等級（主屬性 +statPerLevel × 等級）
+ * @param {number} refineStar 該部位的神品煉化星數（只對神品有效：主屬性再 ×(1 + 星數 × statPerStar)，v1.1 V2）
  * @returns {StatMap}
  */
-function getItemStatTotals(item, enhanceLevel = 0) {
+function getItemStatTotals(item, enhanceLevel = 0, refineStar = 0) {
   /** @type {StatMap} */
   const totals = {};
   if (!item) return totals;
-  const mult = 1 + CONFIG.gear.enhance.statPerLevel * enhanceLevel;
+  const mult = (1 + CONFIG.gear.enhance.statPerLevel * enhanceLevel) * getRefineMult(item, refineStar);
   for (const [k, v] of Object.entries(item.mainStats)) totals[k] = (totals[k] || 0) + v * mult;
   for (const s of item.subStats) totals[s.type] = (totals[s.type] || 0) + s.value;
   return totals;
@@ -162,13 +163,14 @@ function getItemStatTotals(item, enhanceLevel = 0) {
  * @param {StatMap|StatMap[]} bonuses 額外加成（預設為目前的道途 + 上陣靈獸 + 套裝；計算單件裝備戰力時傳 {}）
  *                                  每一組百分比加成各自獨立相乘
  * @param {Partial<Record<Slot, number>>} enhance 部位強化等級
+ * @param {Partial<Record<Slot, number>>} [refine] 部位的神品煉化星數（v1.1 V2；單件法寶戰力傳 {}）
  * @returns {Stats}
  */
-function calcStats(equipped, bonuses = getStatBonuses(equipped), enhance = state.enhance) {
+function calcStats(equipped, bonuses = getStatBonuses(equipped), enhance = state.enhance, refine = state.refine) {
   /** @type {Stats} */
   const s = { ...CONFIG.baseStats, atkPct: 0, hpPct: 0, defPct: 0, goldPct: 0, cdr: 0 };
   for (const slot of CONFIG.slotOrder) {
-    const totals = getItemStatTotals(equipped[slot], (enhance && enhance[slot]) || 0);
+    const totals = getItemStatTotals(equipped[slot], (enhance && enhance[slot]) || 0, (refine && refine[slot]) || 0);
     for (const [k, v] of Object.entries(totals)) s[k] = (s[k] || 0) + v;
   }
   s.atk = s.atk * (1 + s.atkPct);
@@ -246,7 +248,7 @@ function calcItemPower(item) {
   const empty = /** @type {any} */ ({});
   CONFIG.slotOrder.forEach((slot) => (empty[slot] = null));
   const withItem = { ...empty, [item.slot]: item };
-  return calcPower(calcStats(withItem, {}, {})) - calcPower(calcStats(empty, {}, {}));
+  return calcPower(calcStats(withItem, {}, {}, {})) - calcPower(calcStats(empty, {}, {}, {}));
 }
 
 /** 目前角色的最終屬性 */
@@ -292,6 +294,17 @@ function isBetterItem(item) {
 /** 分解可得的金幣 = base × 裝備等級 × 品質分解倍率 */
 function getSalvageGold(item) {
   return Math.round(CONFIG.salvage.base * item.level * getRarity(item).salvageMult);
+}
+
+/** 神品煉化的主屬性倍率：神品 × (1 + 星數 × statPerStar)；其他品階 1（v1.1 V2） */
+function getRefineMult(item, star = 0) {
+  if (!item || !star || getRarityIndex(item) !== CONFIG.divineRarity) return 1;
+  return 1 + CONFIG.gear.refine.statPerStar * star;
+}
+
+/** 分解得到的神髓：神品煉化開放後，每件神品 marrowPerDivine（開放前不給；v1.1 V2） */
+function getSalvageMarrow(item) {
+  return getRarityIndex(item) === CONFIG.divineRarity && isFeatureOpen('divineRefine') ? CONFIG.gear.refine.marrowPerDivine : 0;
 }
 
 /** 分解得到的玄鐵（只有神品有；CONFIG.rarities[].salvageIron） */

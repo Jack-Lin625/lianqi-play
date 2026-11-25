@@ -86,6 +86,10 @@ const ICON_PATHS = {
   essence: `<path ${WASH} d="M24 4C30 14 38 20 38 29 38 37 32 44 24 44S10 37 10 29C10 20 18 14 24 4Z"/>
     <path ${INK} d="M24 4C30 14 38 20 38 29 38 37 32 44 24 44S10 37 10 29C10 20 18 14 24 4Z"/>
     <path ${JADE} opacity="0.7" d="M24 18c4 6 7 9 7 13s-3 7-7 7-7-3-7-7 3-7 7-13Z"/>`,
+  // 神髓（v1.1 V2，神品煉化材料）：菱形晶石，中間一點硃砂
+  marrow: `<path ${WASH} d="M24 4 38 20 24 44 10 20Z"/>
+    <path ${INK} d="M24 4 38 20 24 44 10 20Z M10 20H38 M24 4 18 20 24 44 30 20Z"/>
+    <path ${RED} opacity="0.8" d="M24 14c3 3 4 5 4 7s-2 4-4 4-4-2-4-4 1-4 4-7Z"/>`,
   meditate: `<circle cx="24" cy="22" r="20" style="fill:var(--ico-gold,#e0c389)" opacity="0.18"/>
     <circle cx="24" cy="12" r="4.5" fill="currentColor"/><circle cx="24" cy="6" r="2" fill="currentColor"/>
     <path fill="currentColor" d="M24 17C19 17 16 20 15 26L12 33C10 37 13 40 18 40H30C35 40 38 37 36 33L33 26C32 20 29 17 24 17Z"/>
