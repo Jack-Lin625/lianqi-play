@@ -19,7 +19,7 @@ const CONFIG = {
   },
 
   // ---------- 版本（路線圖 C4）：sw.js 的 VERSION 要一樣；發布新版時兩個一起改，玩家才會看到「有新版本」 ----------
-  app: { version: '1.2.0' },
+  app: { version: '1.3.0' },
 
   // ---------- 存檔保護（路線圖 C1，PLAN.md 2.26；backup.js） ----------
   //   自動備份：最多 slots 份（最舊的先刪），每 intervalMinutes 分鐘在線一份、每天第一次上線一份；存在 localStorage 的 autoKey
@@ -765,7 +765,7 @@ const CONFIG = {
       fox: { name: '靈狐', icon: 'b-fox', color: '#a0522d', desc: '通人性的白狐，狐火可焚妖邪',
         passive: { atkPct: 0.04 }, skill: { name: '狐火', cooldown: 4, mult: 1.2 } },
       turtle: { name: '玄龜', icon: 'b-turtle', color: '#2f5f6b', desc: '背負玄甲，壽與天齊',
-        passive: { hpPct: 0.06 }, skill: { name: '玄甲衝撞', cooldown: 6, mult: 1.6 } },
+        passive: { hpPct: 0.04 }, skill: { name: '玄甲衝撞', cooldown: 6, mult: 1.6 } },
       bird: { name: '赤焰鳥', icon: 'b-bird', color: '#b3261e', desc: '浴火而生，羽翼燃燒不滅之焰',
         passive: { critRate: 0.02 }, skill: { name: '赤焰焚天', cooldown: 5, mult: 1.8 } },
       marten: { name: '雷貂', icon: 'b-marten', color: '#6b3f95', desc: '迅如奔雷，爪帶電光',
@@ -807,7 +807,8 @@ const CONFIG = {
       resonance: { atkPct: 0.03, hpPct: 0.03 },
       skills: {
         fox: { name: '九尾狐火', buffCritRate: 0.1, buffCritDmg: 0.3, buffSec: 3, desc: '命中後 3 秒內，主角會心率 +10%、會心傷害 +30%' },
-        turtle: { name: '玄武鎮岳', buffDmgTaken: 0.35, buffSec: 3, desc: '施放後 3 秒內，主角受到的傷害 −35%' },
+        // v1.3（PLAN.md 2.32）：35%、3 秒 → 20%、2 秒（不比 4 星效果弱）；被動氣血 6% → 4%
+        turtle: { name: '玄武鎮岳', buffDmgTaken: 0.2, buffSec: 2, desc: '施放後 2 秒內，主角受到的傷害 −20%' },
         bird: { name: '浴火焚天', bossDmgPct: 0.6, desc: '對 Boss 傷害 +60%' },
         marten: { name: '九霄奔雷', echoChance: 0.5, desc: '50% 機率再出手一次' },
         crane: { name: '鶴鳴九皋', healPct: 0.05, desc: '命中後回復主角 5% 最大氣血' },

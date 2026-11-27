@@ -7,7 +7,7 @@
  *   瀏覽器發現 sw.js 變了就會下載新版，畫面顯示「有新版本」，玩家按下去才換（不會在戰鬥中自動重新整理）
  * - 只在 https 或 localhost 註冊（pwa.js）；試玩頁（claude.ai 的框架）、直接開檔案、測試的手動推進模式都不註冊
  * ========================================================= */
-const VERSION = '1.2.0';
+const VERSION = '1.3.0';
 const CACHE = 'lianqi-' + VERSION;
 const ASSETS = [
   './',
